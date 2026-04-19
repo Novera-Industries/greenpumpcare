@@ -11,11 +11,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/ductless-mini-split-cleaning`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/ducted-system-cleaning`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/hrv-erv-cleaning`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
-    { url: `${base}/pricing`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${base}/what-we-offer`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${base}/about`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     { url: `${base}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.7 },
     { url: `${base}/contact`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${base}/service-areas`, lastModified: now, changeFrequency: "monthly", priority: 0.85 },
+    { url: `${base}/privacy`, lastModified: now, changeFrequency: "yearly", priority: 0.2 },
   ];
 
   const areas: MetadataRoute.Sitemap = SERVICE_AREAS.map((a) => ({

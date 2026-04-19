@@ -30,7 +30,7 @@ export function ServicesOverview() {
             const Icon = getIcon(service.icon);
             return (
               <StaggerItem key={service.id}>
-                <Link href="/pricing" className="block h-full">
+                <Link href="/what-we-offer#services" className="block h-full">
                   <div className="card-premium relative bg-white rounded-card shadow-card p-8 h-full flex flex-col overflow-hidden">
                     {/* Corner glow on hover */}
                     <div className="card-glow absolute -top-8 -right-8 w-32 h-32 bg-primary/10 rounded-full blur-2xl" />
@@ -103,7 +103,7 @@ export function ServicesOverview() {
                       Save {formatPrice(bundle.savings)}
                     </p>
                   </div>
-                  <Button href="/pricing" size="sm">
+                  <Button href="/what-we-offer#services" size="sm">
                     View
                   </Button>
                 </div>

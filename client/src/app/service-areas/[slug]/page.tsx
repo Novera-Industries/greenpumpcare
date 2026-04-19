@@ -277,7 +277,7 @@ export default async function ServiceAreaPage({ params }: PageProps) {
               {[...SERVICES, BUNDLE].map((s) => (
                 <li key={s.name} className="flex items-baseline justify-center gap-6 py-4">
                   <Link
-                    href={"slug" in s && s.slug ? s.slug : "/pricing"}
+                    href={"slug" in s && s.slug ? s.slug : "/what-we-offer"}
                     className="text-text font-medium hover:text-primary transition-colors"
                   >
                     {s.name}

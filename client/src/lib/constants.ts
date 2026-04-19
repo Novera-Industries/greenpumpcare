@@ -43,11 +43,19 @@ export const COMPANY = {
 export interface NavLink {
   label: string;
   href: string;
+  children?: NavLink[];
 }
 
 export const NAV_LINKS: NavLink[] = [
-  { label: "Services", href: "/#services" },
-  { label: "Pricing", href: "/pricing" },
+  {
+    label: "What We Offer",
+    href: "/what-we-offer",
+    children: [
+      { label: "Cleaning", href: "/what-we-offer#services" },
+      { label: "Repairs", href: "/what-we-offer#repairs" },
+      { label: "Pricing", href: "/what-we-offer" },
+    ],
+  },
   { label: "About", href: "/about" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
@@ -124,7 +132,7 @@ export const SERVICES: Service[] = [
       "The only premium HRV/ERV cleaning service in Halifax. Core, filters, and ductwork. Keeping your ventilation system running efficiently and your indoor air fresh.",
     shortDescription:
       "Core, filters, and ductwork. The only premium HRV service in Halifax.",
-    duration: "1–1.5 hours",
+    duration: "0.5–1 hours",
     features: [
       "Heat exchange core removal and deep cleaning",
       "Filter assessment and replacement recommendation",
@@ -215,7 +223,7 @@ export const CARE_PLANS: CarePlan[] = [
     monthlyPrice: 22,
     description: "Annual maintenance for worry-free performance.",
     features: [
-      "1 deep clean/year",
+      "1 service visit/year",
       "10% service discount",
       "Priority booking",
       "Maintenance reminders",
@@ -229,7 +237,7 @@ export const CARE_PLANS: CarePlan[] = [
     monthlyPrice: 35,
     description: "Bi-annual deep cleans with priority service.",
     features: [
-      "2 deep cleans/year",
+      "2 service visits/year",
       "15% service discount",
       "Priority booking",
       "Maintenance reminders",
@@ -244,7 +252,7 @@ export const CARE_PLANS: CarePlan[] = [
     monthlyPrice: 55,
     description: "The ultimate protection for your system.",
     features: [
-      "4 deep cleans/year",
+      "4 service visits/year",
       "20% service discount",
       "VIP priority booking",
       "Emergency service priority",
@@ -425,70 +433,145 @@ export const HRV_STEPS: ProcessStep[] = [
 /*  FAQ                                                                */
 /* ------------------------------------------------------------------ */
 
+export type FAQCategory = "cleanings" | "repairs" | "maintenance";
+
 export interface FAQItem {
   question: string;
   answer: string;
+  category?: FAQCategory;
 }
 
 export const GENERAL_FAQ: FAQItem[] = [
   {
+    category: "cleanings",
     question: "How long does a cleaning take?",
     answer:
-      "A ductless mini-split deep clean takes 1+ hour per indoor head. Ducted systems take 2–3 hours. HRV/ERV cleaning takes 1–1.5 hours. We never rush. Thoroughness is our priority.",
+      "A ductless mini-split deep clean takes 1+ hour per indoor head. Ducted systems take 2–3 hours. HRV/ERV cleaning takes 0.5–1 hours. We never rush. Thoroughness is our priority.",
   },
   {
+    category: "cleanings",
     question: "Are your cleaning products safe for pets and children?",
     answer:
       "Absolutely. We use only non-toxic, eco-friendly cleaning solutions that are safe for your family and pets. No harsh chemicals.",
   },
   {
+    category: "cleanings",
     question: "Will cleaning void my warranty?",
     answer:
       "No. Our service is performed to manufacturer specifications, which actually helps maintain your warranty coverage. Regular maintenance is typically required by manufacturers.",
   },
   {
+    category: "cleanings",
     question: "What areas do you serve?",
     answer:
       "We serve the entire Halifax Regional Municipality, including Dartmouth, Bedford, Sackville, and surrounding areas.",
   },
   {
+    category: "cleanings",
     question: "How do I book a cleaning?",
     answer:
       "You can book online through our website, call us at (782) 830-5900, or email info@greenpumpcare.com. We offer flexible scheduling including evenings and Saturdays.",
   },
   {
-    question: "What is a care plan?",
-    answer:
-      "Our care plans are monthly subscriptions that include scheduled deep cleanings, priority booking, and discounts on additional services. Plans start at $22/month for a single ductless head.",
-  },
-  {
-    question: "How does care plan billing work?",
-    answer:
-      "Plans are billed monthly to the credit card on file. Your first payment is charged at signup, then on the same day each month going forward.",
-  },
-  {
-    question: "Can I cancel my care plan?",
-    answer:
-      "Yes. No cancellation fees. We simply ask for 30 days notice so we can schedule your final service.",
-  },
-  {
+    category: "cleanings",
     question: "What is the satisfaction guarantee?",
     answer:
       "If you're not satisfied with a service, we'll re-service your system at no cost. If you're still not happy, we'll refund that month's payment. No questions asked.",
   },
   {
+    category: "maintenance",
+    question: "What is a care plan?",
+    answer:
+      "Our care plans are monthly subscriptions that include scheduled deep cleanings, priority booking, and discounts on additional services. Plans start at $22/month for a single ductless head.",
+  },
+  {
+    category: "maintenance",
+    question: "How does care plan billing work?",
+    answer:
+      "Plans are billed monthly to the credit card on file. Your first payment is charged at signup, then on the same day each month going forward.",
+  },
+  {
+    category: "maintenance",
+    question: "Can I cancel my care plan?",
+    answer:
+      "Yes. No cancellation fees. We simply ask for 30 days notice so we can schedule your final service.",
+  },
+  {
+    category: "maintenance",
     question: "Can I upgrade or downgrade my plan?",
     answer:
       "Absolutely. You can change your tier at any time and it takes effect at the next billing cycle.",
   },
   {
+    category: "maintenance",
     question: "Are repairs included in my care plan?",
     answer:
       "Repairs are billed separately, but care plan members receive their tier discount. 10% on Essential, 15% on Comfort, and 20% on Complete. Complete members also receive a diagnostic fee waiver (a $99 value) on any service call.",
   },
   {
+    category: "maintenance",
     question: "How do I schedule my included cleanings?",
     answer:
       "We send automatic maintenance reminders when your cleaning is due. You can also schedule directly through your client portal, by calling (782) 830-5900, or by emailing info@greenpumpcare.com.",
+  },
+  {
+    category: "maintenance",
+    question: "How often does my heat pump need cleaning?",
+    answer:
+      "Ductless mini-splits: 1–2 deep cleans per year (spring and fall); 4 per year for high-use homes or those with pets and allergies. HRV/ERV units: 1–2 per year. Ducted systems: 1–2 per year, plus filter replacement every 1–3 months. Regular maintenance keeps your warranty valid and efficiency high.",
+  },
+  {
+    category: "maintenance",
+    question: "What happens if I skip regular maintenance?",
+    answer:
+      "A neglected heat pump can lose up to 30% of its efficiency. Dirty coils, blocked blower wheels, contaminated drain lines, and clogged filters lead to higher energy bills, poorer indoor air, and premature component failure. Maintained systems last up to twice as long.",
+  },
+  {
+    category: "maintenance",
+    question: "How often should I rinse or replace my filters?",
+    answer:
+      "Rinse ductless filters monthly. Ducted system filters should be replaced every 1–3 months (included in Ducted Care Plans). HRV/ERV filters should be checked every 2–3 months and replaced as needed.",
+  },
+  {
+    category: "repairs",
+    question: "How much does a diagnostic visit cost?",
+    answer:
+      "$99 flat-rate. Our licensed technician checks electrical connections, refrigerant levels, airflow, controls, and mechanical components to pinpoint the exact problem. If you proceed with the repair, the $99 is applied toward the cost.",
+  },
+  {
+    category: "repairs",
+    question: "How is repair labour priced?",
+    answer:
+      "Repair labour is billed at $125/hr with no hidden fees. Quality parts are billed separately and always quoted before work begins. Care Plan members receive their tier discount (10%, 15%, or 20%) on all repair costs.",
+  },
+  {
+    category: "repairs",
+    question: "What systems and brands do you repair?",
+    answer:
+      "Ductless mini-splits (all brands), ducted heat pump systems, HRV/ERV ventilation units, thermostats and controls, condensate drain issues, and electrical or wiring faults. Our technicians can read and diagnose error codes on all major brands.",
+  },
+  {
+    category: "repairs",
+    question: "What are the signs my heat pump needs service?",
+    answer:
+      "Reduced heating or cooling performance, unusual noises (grinding, rattling, squealing), musty odors from vents, higher-than-normal energy bills, water leaking from the indoor unit, or ice on the outdoor unit outside defrost cycles. If you notice any of these, call us for a diagnostic.",
+  },
+  {
+    category: "repairs",
+    question: "Do you offer same-day repair service?",
+    answer:
+      "Often yes. We schedule diagnostic visits as quickly as possible, with same-day or next-day availability prioritized for Care Plan members.",
+  },
+  {
+    category: "repairs",
+    question: "Do you warranty your repair work?",
+    answer:
+      "Yes. If the same issue returns within our warranty period, we'll address it at no additional cost. You also receive a written report with the diagnosis, work performed, parts used, and recommendations to prevent future problems.",
+  },
+  {
+    category: "repairs",
+    question: "Should I repair my heat pump or replace it?",
+    answer:
+      "Generally repair if the system is under 10 years old, the repair cost is under 50% of replacement, and it's the first major issue. Consider replacement if the system is 12–15+ years old, repair costs exceed 50% of replacement, it uses older R-22 refrigerant, or you're seeing frequent breakdowns. We'll give you an honest recommendation after the diagnostic.",
   },
 ];

@@ -198,7 +198,14 @@ export function Footer() {
             <p className="text-center">
               © {new Date().getFullYear()} {COMPANY.legalName} All rights reserved.
             </p>
-            <div />
+            <div className="text-center lg:text-right">
+              <Link
+                href="/privacy"
+                className="text-white/35 hover:text-white/70 transition-colors"
+              >
+                Privacy Policy
+              </Link>
+            </div>
           </div>
         </div>
       </div>

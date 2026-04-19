@@ -308,3 +308,24 @@ body {
     padding: 0 16px;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/*  Housecall Pro booking modal overlay                                */
+/* ------------------------------------------------------------------ */
+
+div.hcp-widget.hcp-widget--visible {
+  background-color: rgba(20, 24, 22, 0.55) !important;
+  backdrop-filter: blur(6px) !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  animation: hcp-fade-in 0.2s ease-out;
+}
+
+iframe.hcp-iframe {
+  border-radius: 0px !important;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.3) !important;
+}
+
+@keyframes hcp-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

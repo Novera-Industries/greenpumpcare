@@ -5,15 +5,32 @@ import { ChevronDown } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { cn } from "@/lib/utils";
-import type { FAQItem } from "@/lib/constants";
+import type { FAQItem, FAQCategory } from "@/lib/constants";
 
 interface FAQProps {
   title?: string;
   items: FAQItem[];
 }
 
+const CATEGORY_TABS: { key: FAQCategory; label: string }[] = [
+  { key: "cleanings", label: "Cleanings" },
+  { key: "repairs", label: "Repairs" },
+  { key: "maintenance", label: "Maintenance" },
+];
+
 export function FAQ({ title = "Frequently asked questions", items }: FAQProps) {
+  const hasCategories = items.some((item) => item.category);
+  const [activeCategory, setActiveCategory] = useState<FAQCategory>("cleanings");
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const visibleItems = hasCategories
+    ? items.filter((item) => item.category === activeCategory)
+    : items;
+
+  const changeCategory = (category: FAQCategory) => {
+    setActiveCategory(category);
+    setOpenIndex(null);
+  };
 
   return (
     <AnimatedSection className="section">
@@ -22,12 +39,36 @@ export function FAQ({ title = "Frequently asked questions", items }: FAQProps) {
           {title}
         </h2>
 
+        {hasCategories && (
+          <div className="flex justify-center mb-8">
+            <div className="inline-flex items-center gap-1 bg-stripe rounded-pill p-1">
+              {CATEGORY_TABS.map((tab) => {
+                const isActive = tab.key === activeCategory;
+                return (
+                  <button
+                    key={tab.key}
+                    onClick={() => changeCategory(tab.key)}
+                    className={cn(
+                      "px-5 py-2 rounded-pill text-sm font-semibold transition-colors",
+                      isActive
+                        ? "bg-primary text-white shadow-card"
+                        : "text-gray-600 hover:text-text"
+                    )}
+                  >
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         <div className="space-y-3">
-          {items.map((item, i) => {
+          {visibleItems.map((item, i) => {
             const isOpen = openIndex === i;
             return (
               <div
-                key={i}
+                key={`${activeCategory}-${i}`}
                 className="bg-white rounded-card shadow-card overflow-hidden"
               >
                 <button

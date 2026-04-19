@@ -4,8 +4,8 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { motion, useScroll, useMotionValueEvent } from "motion/react";
-import { Phone, Menu, LogIn } from "lucide-react";
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "motion/react";
+import { Phone, Menu, LogIn, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { COMPANY, NAV_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/Button";
@@ -16,6 +16,7 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const pathname = usePathname();
   const { scrollY } = useScroll();
   const lastScrollY = useRef(0);
@@ -65,6 +66,67 @@ export function Navbar() {
               const isActive =
                 pathname === link.href ||
                 (link.href !== "/" && pathname.startsWith(link.href.split("#")[0]));
+
+              if (link.children && link.children.length > 0) {
+                const isOpen = openDropdown === link.label;
+                return (
+                  <div
+                    key={link.href}
+                    className="relative"
+                    onMouseEnter={() => setOpenDropdown(link.label)}
+                    onMouseLeave={() => setOpenDropdown(null)}
+                  >
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        "relative flex items-center gap-1 font-body text-[14px] font-medium transition-colors py-1 tracking-wide",
+                        isActive ? "text-primary" : "text-gray-600 hover:text-text"
+                      )}
+                      onFocus={() => setOpenDropdown(link.label)}
+                    >
+                      {link.label}
+                      <ChevronDown
+                        className={cn(
+                          "w-3.5 h-3.5 transition-transform duration-200",
+                          isOpen && "rotate-180"
+                        )}
+                        strokeWidth={2.25}
+                      />
+                      <span
+                        className={cn(
+                          "absolute -bottom-0.5 left-0 right-6 h-px bg-primary transition-transform duration-300 origin-center",
+                          isActive ? "scale-x-100" : "scale-x-0"
+                        )}
+                      />
+                    </Link>
+                    <AnimatePresence>
+                      {isOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -6 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -6 }}
+                          transition={{ duration: 0.15 }}
+                          className="absolute left-1/2 -translate-x-1/2 top-full pt-3"
+                        >
+                          <div className="min-w-[180px] bg-white rounded-card shadow-elevated border border-gray-100 py-2">
+                            {link.children.map((child) => (
+                              <Link
+                                key={child.href}
+                                href={child.href}
+                                onClick={() => setOpenDropdown(null)}
+                                className="block px-5 py-2.5 text-[14px] font-medium text-gray-600 hover:text-primary hover:bg-stripe transition-colors"
+                              >
+                                {child.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={link.href}

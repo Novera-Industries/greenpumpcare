@@ -71,10 +71,10 @@ const FEATURES: FeatureRow[] = [
   },
 ];
 
-function Cell({ value, isComfort }: { value: boolean | string; isComfort?: boolean }) {
+function Cell({ value }: { value: boolean | string }) {
   if (typeof value === "string") {
     return (
-      <div className={`px-4 py-4 text-center text-sm font-semibold ${isComfort ? "text-mint" : "text-primary"}`}>
+      <div className="px-4 py-4 text-center text-sm font-semibold text-primary">
         {value}
       </div>
     );
@@ -82,7 +82,7 @@ function Cell({ value, isComfort }: { value: boolean | string; isComfort?: boole
   if (value) {
     return (
       <div className="px-4 py-4 flex justify-center">
-        <Check className={`w-4 h-4 ${isComfort ? "text-mint" : "text-primary"}`} />
+        <Check className="w-4 h-4 text-primary" />
       </div>
     );
   }
@@ -138,7 +138,7 @@ export function TierComparison() {
                 </div>
                 <Cell value={row.Essential} />
                 <div className="bg-[#1a1a1a]/5">
-                  <Cell value={row.Comfort} isComfort />
+                  <Cell value={row.Comfort} />
                 </div>
                 <Cell value={row.Complete} />
               </div>

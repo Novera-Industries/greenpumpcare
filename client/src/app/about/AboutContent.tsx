@@ -14,6 +14,8 @@ import {
   Wrench,
   MessageSquare,
   Sparkles,
+  FileText,
+  Download,
 } from "lucide-react";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { StaggerContainer } from "@/components/ui/StaggerContainer";
@@ -505,7 +507,163 @@ export function AboutContent() {
         </div>
       </AnimatedSection>
 
+      {/* Documentation — downloadable PDFs */}
+      <AnimatedSection className="section">
+        <div className="container max-w-5xl">
+          <div className="text-center mb-12">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary mb-4">
+              Documentation
+            </p>
+            <h2 className="font-heading text-4xl sm:text-5xl font-semibold text-text tracking-[-0.035em] leading-[1.05]">
+              Guides you can{" "}
+              <span className="text-primary">download.</span>
+            </h2>
+            <p className="mt-5 text-gray-600 text-lg max-w-xl mx-auto">
+              Free PDF resources for our clients. No email required.
+            </p>
+          </div>
+
+          {/* Guides */}
+          <div className="mb-12">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-500 text-center mb-6">
+              Guides
+            </p>
+            <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {GUIDES.map((doc) => (
+                <DocCard key={doc.file} doc={doc} />
+              ))}
+            </StaggerContainer>
+          </div>
+
+          {/* Brochures */}
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-500 text-center mb-6">
+              Brochures
+            </p>
+            <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {BROCHURES.map((doc) => (
+                <DocCard key={doc.file} doc={doc} compact />
+              ))}
+            </StaggerContainer>
+          </div>
+        </div>
+      </AnimatedSection>
+
       <BookingCTA />
     </>
   );
 }
+
+interface DocumentEntry {
+  title: string;
+  description: string;
+  file: string;
+  size: string;
+}
+
+function DocCard({ doc, compact = false }: { doc: DocumentEntry; compact?: boolean }) {
+  return (
+    <StaggerItem>
+      <a
+        href={doc.file}
+        download
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group block h-full bg-white border border-gray-100 rounded-[20px] p-6 hover:border-primary/30 hover:shadow-card transition-all"
+      >
+        <div className="flex items-start gap-4">
+          <div className="w-11 h-11 rounded-[12px] bg-primary/10 flex items-center justify-center shrink-0">
+            <FileText className="w-5 h-5 text-primary" strokeWidth={2} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className={`font-heading font-semibold text-text mb-1.5 ${compact ? "text-base" : "text-xl"}`}>
+              {doc.title}
+            </h3>
+            <p className={`text-gray-600 leading-relaxed mb-4 ${compact ? "text-sm" : "text-[15px]"}`}>
+              {doc.description}
+            </p>
+            <div className="flex items-center justify-between">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-400">
+                PDF · {doc.size}
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-primary font-semibold text-sm group-hover:gap-2 transition-all">
+                <Download className="w-4 h-4" />
+                Download
+              </span>
+            </div>
+          </div>
+        </div>
+      </a>
+    </StaggerItem>
+  );
+}
+
+const GUIDES: DocumentEntry[] = [
+  {
+    title: "Heat Pump Maintenance Guide",
+    description:
+      "How your heat pump works, what goes wrong without regular cleaning, our professional process, and the recommended service schedule by system type.",
+    file: "/documents/greenpump-maintenance-guide.pdf",
+    size: "12 MB",
+  },
+  {
+    title: "Heat Pump Repairs Guide",
+    description:
+      "Common heat pump problems, our diagnostic and repair process, transparent pricing, and guidance on when to repair vs. replace your system.",
+    file: "/documents/greenpump-repairs-guide.pdf",
+    size: "14 MB",
+  },
+  {
+    title: "Care Plans Guide",
+    description:
+      "What's included in each Care Plan tier, how billing works, and why members get priority booking, service discounts, and warranty support.",
+    file: "/documents/greenpump-care-plans-guide.pdf",
+    size: "12 MB",
+  },
+  {
+    title: "HRV/ERV Guide",
+    description:
+      "How your ventilation system works, why cleaning matters for indoor air quality, and what a GreenPump Care HRV/ERV deep clean covers.",
+    file: "/documents/greenpump-hrv-erv-guide.pdf",
+    size: "11 MB",
+  },
+];
+
+const BROCHURES: DocumentEntry[] = [
+  {
+    title: "Ductless Mini-Split",
+    description: "Deep clean service overview, what's included, and pricing at a glance.",
+    file: "/documents/greenpump-ductless-brochure.pdf",
+    size: "11 MB",
+  },
+  {
+    title: "Ducted System",
+    description: "Full ducted system service summary with timeline and price.",
+    file: "/documents/greenpump-ducted-brochure.pdf",
+    size: "13 MB",
+  },
+  {
+    title: "HRV/ERV Cleaning",
+    description: "The only premium HRV/ERV service in Halifax. Core, filters, and ductwork.",
+    file: "/documents/greenpump-hrv-erv-brochure.pdf",
+    size: "11 MB",
+  },
+  {
+    title: "Care Plans",
+    description: "Monthly maintenance tiers, benefits, and discount summary.",
+    file: "/documents/greenpump-care-plans-brochure.pdf",
+    size: "13 MB",
+  },
+  {
+    title: "Repairs",
+    description: "Diagnostic pricing, labour rates, and what we repair at a glance.",
+    file: "/documents/greenpump-repairs-brochure.pdf",
+    size: "13 MB",
+  },
+  {
+    title: "Bundle & Save",
+    description: "Our combined service packages and savings on multi-service visits.",
+    file: "/documents/greenpump-cross-promo-brochure.pdf",
+    size: "13 MB",
+  },
+];

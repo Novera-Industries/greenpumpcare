@@ -97,7 +97,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         question: "How long does an annual deep clean take?",
         answer:
-          "About 1–1.5 hours per indoor head for ductless, 2–3 hours for ducted systems, and 1–1.5 hours for HRV/ERV units. We never rush. Thoroughness matters more than speed.",
+          "About 1–1.5 hours per indoor head for ductless, 2–3 hours for ducted systems, and 0.5–1 hours for HRV/ERV units. We never rush. Thoroughness matters more than speed.",
       },
       {
         question: "Does rinsing the filter count as cleaning?",

@@ -148,7 +148,7 @@ export function PriceCalculator() {
     breakdown.push({ label: "Ducted Heat Pump", amount: SYSTEM_PLAN_PRICING.ducted.flatRate[tier] });
 
   return (
-    <AnimatedSection className="section bg-bg-light">
+    <AnimatedSection id="pricing" className="section bg-bg-light scroll-mt-24">
       <div className="container">
         <div className="text-center mb-10">
           <h2 className="font-heading text-4xl sm:text-5xl font-semibold text-text mb-4 tracking-[-0.035em]">
