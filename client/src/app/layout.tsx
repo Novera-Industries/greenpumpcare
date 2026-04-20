@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Work_Sans, Inter } from "next/font/google";
+import Script from "next/script";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { StickyPhoneCTA } from "@/components/layout/StickyPhoneCTA";
 import { LocalBusinessSchema } from "@/components/seo/LocalBusinessSchema";
 import { FAQSchema } from "@/components/seo/FAQSchema";
 import { BookingModal } from "@/components/sections/BookingModal";
+import { ChatBubble } from "@/components/layout/ChatBubble";
 import { COMPANY } from "@/lib/constants";
 import "./globals.css";
 
@@ -84,6 +86,14 @@ export default function RootLayout({
         <LocalBusinessSchema />
         <FAQSchema />
         <BookingModal />
+        <ChatBubble />
+        <Script
+          id="housecall-pro-chat-bubble"
+          src="https://chat.housecallpro.com/proChat.js"
+          strategy="afterInteractive"
+          data-color="#09A47A"
+          data-organization="68da54a6-10d0-473f-b040-00c32a597360"
+        />
       </body>
     </html>
   );

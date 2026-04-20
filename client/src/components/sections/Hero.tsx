@@ -385,7 +385,7 @@ export function Hero() {
             className="flex flex-wrap justify-center gap-4 mb-10 max-w-2xl mx-auto"
           >
             {[
-              { icon: Shield, label: "BBB A-rated" },
+              { icon: Shield, label: "Satisfaction Guaranteed" },
               { icon: Award, label: "Licensed & Insured" },
               { icon: Leaf, label: "Eco-friendly" },
             ].map((badge) => (

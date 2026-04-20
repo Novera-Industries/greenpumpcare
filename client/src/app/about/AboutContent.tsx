@@ -444,13 +444,13 @@ export function AboutContent() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="bg-white rounded-[18px] border border-gray-100 p-6 text-center">
               <Shield
-                className="w-9 h-9 text-bbb mx-auto mb-3"
+                className="w-9 h-9 text-primary mx-auto mb-3"
                 strokeWidth={1.5}
               />
               <p className="font-heading font-bold text-2xl text-text">
-                BBB {COMPANY.bbbRating}
+                Guaranteed
               </p>
-              <p className="text-gray-500 text-xs mt-1">Accredited since 2025</p>
+              <p className="text-gray-500 text-xs mt-1">100% Satisfaction</p>
             </div>
             <div className="bg-white rounded-[18px] border border-gray-100 p-6 text-center">
               <Star

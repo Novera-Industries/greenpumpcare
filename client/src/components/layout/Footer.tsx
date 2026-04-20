@@ -49,7 +49,7 @@ const socials = [
 ];
 
 const trustBadges = [
-  { icon: Shield, label: "BBB A-rated" },
+  { icon: Shield, label: "Satisfaction Guaranteed" },
   { icon: Award, label: "Licensed & Insured" },
   { icon: Leaf, label: "Eco-friendly" },
 ];
@@ -198,12 +198,18 @@ export function Footer() {
             <p className="text-center">
               © {new Date().getFullYear()} {COMPANY.legalName} All rights reserved.
             </p>
-            <div className="text-center lg:text-right">
+            <div className="text-center lg:text-right flex flex-wrap items-center justify-center lg:justify-end gap-x-4 gap-y-1">
               <Link
                 href="/privacy"
                 className="text-white/35 hover:text-white/70 transition-colors"
               >
                 Privacy Policy
+              </Link>
+              <Link
+                href="/terms"
+                className="text-white/35 hover:text-white/70 transition-colors"
+              >
+                Terms &amp; Conditions
               </Link>
             </div>
           </div>

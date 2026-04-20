@@ -20,7 +20,7 @@ interface BookingPayload {
   state: string;
   zip: string;
   country: string;
-  service: ServicePayload;
+  services: ServicePayload[];
   notes?: string;
 }
 
@@ -60,13 +60,18 @@ export async function POST(req: Request) {
       );
     }
   }
-  if (
-    !body.service ||
-    typeof body.service.name !== "string" ||
-    typeof body.service.priceCents !== "number" ||
-    typeof body.service.quantity !== "number"
-  ) {
-    return NextResponse.json({ error: "Missing service selection." }, { status: 400 });
+  if (!Array.isArray(body.services) || body.services.length === 0) {
+    return NextResponse.json({ error: "Please select at least one service." }, { status: 400 });
+  }
+  for (const svc of body.services) {
+    if (
+      !svc ||
+      typeof svc.name !== "string" ||
+      typeof svc.priceCents !== "number" ||
+      typeof svc.quantity !== "number"
+    ) {
+      return NextResponse.json({ error: "Invalid service selection." }, { status: 400 });
+    }
   }
 
   const phoneDigits = body.phone.replace(/\D/g, "");
@@ -129,15 +134,13 @@ export async function POST(req: Request) {
   const jobPayload = {
     customer_id: customer.id,
     address_id: addressId,
-    line_items: [
-      {
-        name: body.service.name,
-        description: body.service.description,
-        unit_price: body.service.priceCents,
-        quantity: body.service.quantity,
-        kind: "labor",
-      },
-    ],
+    line_items: body.services.map((svc) => ({
+      name: svc.name,
+      description: svc.description,
+      unit_price: svc.priceCents,
+      quantity: svc.quantity,
+      kind: "labor",
+    })),
     work_status: "unscheduled",
     description: jobDescription,
   };

@@ -2,69 +2,34 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { X, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { X, CheckCircle2, AlertCircle, Loader2, Check, Minus, Plus, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { BOOKING_MODAL_EVENT } from "@/lib/housecallpro";
 import {
+  SYSTEM_PLAN_PRICING,
   DUCTLESS_ONETIME_PRICING,
-  DUCTLESS_EXTRA_HEAD_PRICE,
   ductlessOneTimePrice,
   COMPANY,
+  type SystemType,
 } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
-interface ServiceOption {
-  id: string;
-  name: string;
-  description: string;
-  basePrice: number;
-  requiresHeadCount?: boolean;
+type Status = "idle" | "submitting" | "success" | "error";
+
+interface FormFields {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  street: string;
+  unit: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+  notes: string;
 }
 
-const SERVICE_OPTIONS: ServiceOption[] = [
-  {
-    id: "ductless",
-    name: "Ductless mini-split deep clean",
-    description: "Complete disassembly, coil wash, antimicrobial treatment.",
-    basePrice: 199,
-    requiresHeadCount: true,
-  },
-  {
-    id: "ducted",
-    name: "Ducted system deep clean",
-    description: "Full ducted system service with coil and component cleaning.",
-    basePrice: 349,
-  },
-  {
-    id: "hrv",
-    name: "HRV/ERV cleaning",
-    description: "Core, filters, and ductwork. Premium HRV service.",
-    basePrice: 129,
-  },
-  {
-    id: "bundle-mini-hrv",
-    name: "Mini-split + HRV bundle",
-    description: "Ductless mini-split deep clean + HRV/ERV cleaning in one visit.",
-    basePrice: 299,
-  },
-  {
-    id: "bundle-ducted-hrv",
-    name: "Ducted + HRV bundle",
-    description: "Ducted system deep clean + HRV/ERV cleaning in one visit.",
-    basePrice: 449,
-  },
-  {
-    id: "bundle-ducted-head",
-    name: "Ducted + 1 ductless head bundle",
-    description: "Ducted system deep clean + one ductless head cleaned in the same visit.",
-    basePrice: 499,
-  },
-];
-
-const HEAD_COUNT_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8];
-
-const INITIAL_FORM = {
-  serviceId: "ductless",
-  headCount: 1,
+const INITIAL_FORM: FormFields = {
   firstName: "",
   lastName: "",
   phone: "",
@@ -77,18 +42,18 @@ const INITIAL_FORM = {
   notes: "",
 };
 
-type FormState = typeof INITIAL_FORM;
-
 export function BookingModal() {
   const [open, setOpen] = useState(false);
-  const [form, setForm] = useState<FormState>(INITIAL_FORM);
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">(
-    "idle"
-  );
+  const [systems, setSystems] = useState<Set<SystemType>>(new Set(["ductless"]));
+  const [ductlessHeads, setDuctlessHeads] = useState(1);
+  const [form, setForm] = useState<FormFields>(INITIAL_FORM);
+  const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const handler = () => {
+      setSystems(new Set(["ductless"]));
+      setDuctlessHeads(1);
       setForm(INITIAL_FORM);
       setStatus("idle");
       setErrorMessage("");
@@ -115,27 +80,85 @@ export function BookingModal() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const selectedService =
-    SERVICE_OPTIONS.find((s) => s.id === form.serviceId) ?? SERVICE_OPTIONS[0];
+  function toggleSystem(sys: SystemType) {
+    setSystems((prev) => {
+      const next = new Set(prev);
+      if (next.has(sys)) {
+        if (next.size === 1) return prev;
+        next.delete(sys);
+      } else {
+        next.add(sys);
+      }
+      return next;
+    });
+  }
 
-  const price =
-    selectedService.requiresHeadCount && selectedService.id === "ductless"
-      ? ductlessOneTimePrice(form.headCount)
-      : selectedService.basePrice;
-
-  function update<K extends keyof FormState>(key: K, value: FormState[K]) {
+  function update<K extends keyof FormFields>(key: K, value: FormFields[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
+
+  const hasDuctless = systems.has("ductless");
+  const hasHrv = systems.has("hrv");
+  const hasDucted = systems.has("ducted");
+
+  const baseDuctlessPrice = hasDuctless ? ductlessOneTimePrice(ductlessHeads) : 0;
+  const baseHrvPrice = hasHrv ? SYSTEM_PLAN_PRICING.hrv.oneTimePrice : 0;
+  const baseDuctedPrice = hasDucted ? SYSTEM_PLAN_PRICING.ducted.oneTimePrice : 0;
+  const subtotal = baseDuctlessPrice + baseHrvPrice + baseDuctedPrice;
+
+  let bundleName: string | null = null;
+  let bundleSavings = 0;
+  let ductlessPrice = baseDuctlessPrice;
+  let hrvPrice = baseHrvPrice;
+  const ductedPrice = baseDuctedPrice;
+
+  if (hasDuctless && hasDucted) {
+    bundleName = "Ducted + ductless bundle";
+    bundleSavings = 49;
+    ductlessPrice = Math.max(0, baseDuctlessPrice - bundleSavings);
+  } else if (hasHrv && (hasDuctless || hasDucted)) {
+    bundleName = hasDuctless ? "Mini-split + HRV bundle" : "Ducted + HRV bundle";
+    bundleSavings = 29;
+    hrvPrice = Math.max(0, baseHrvPrice - bundleSavings);
+  }
+
+  const total = ductlessPrice + hrvPrice + ductedPrice;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setStatus("submitting");
     setErrorMessage("");
 
-    const serviceName =
-      selectedService.requiresHeadCount && selectedService.id === "ductless"
-        ? `${selectedService.name} — ${form.headCount} head${form.headCount > 1 ? "s" : ""}`
-        : selectedService.name;
+    const services: Array<{
+      name: string;
+      description: string;
+      priceCents: number;
+      quantity: number;
+    }> = [];
+    if (systems.has("ductless")) {
+      services.push({
+        name: `Ductless mini-split deep clean — ${ductlessHeads} head${ductlessHeads > 1 ? "s" : ""}`,
+        description: "Complete disassembly, coil wash, antimicrobial treatment.",
+        priceCents: ductlessPrice * 100,
+        quantity: 1,
+      });
+    }
+    if (systems.has("hrv")) {
+      services.push({
+        name: "HRV/ERV cleaning",
+        description: "Core, filters, and ductwork. Premium HRV service.",
+        priceCents: hrvPrice * 100,
+        quantity: 1,
+      });
+    }
+    if (systems.has("ducted")) {
+      services.push({
+        name: "Ducted system deep clean",
+        description: "Full ducted system service with coil and component cleaning.",
+        priceCents: ductedPrice * 100,
+        quantity: 1,
+      });
+    }
 
     const payload = {
       firstName: form.firstName,
@@ -147,12 +170,7 @@ export function BookingModal() {
       state: form.state,
       zip: form.zip,
       country: form.country,
-      service: {
-        name: serviceName,
-        description: selectedService.description,
-        priceCents: price * 100,
-        quantity: 1,
-      },
+      services,
       notes: form.notes,
     };
 
@@ -208,7 +226,7 @@ export function BookingModal() {
                   id="booking-modal-title"
                   className="font-heading text-xl font-semibold text-text"
                 >
-                  Book your service
+                  Book Your Service
                 </h2>
                 <button
                   type="button"
@@ -224,7 +242,7 @@ export function BookingModal() {
                 <div className="p-8 text-center">
                   <CheckCircle2 className="w-14 h-14 text-primary mx-auto mb-5" />
                   <h3 className="font-heading text-2xl font-semibold text-text mb-3">
-                    Booking request received
+                    Booking Request Received
                   </h3>
                   <p className="text-gray-600 leading-relaxed mb-6 max-w-md mx-auto">
                     Thanks {form.firstName}. We&apos;ll reach out within one business
@@ -243,56 +261,199 @@ export function BookingModal() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="p-6 space-y-5">
-                  {/* Service */}
-                  <Field label="Service" required>
-                    <select
-                      required
-                      value={form.serviceId}
-                      onChange={(e) => update("serviceId", e.target.value)}
-                      className={inputClass}
-                    >
-                      {SERVICE_OPTIONS.map((s) => (
-                        <option key={s.id} value={s.id}>
-                          {s.name} — from ${s.basePrice}
-                        </option>
-                      ))}
-                    </select>
-                  </Field>
-
-                  {selectedService.requiresHeadCount && (
-                    <Field label="Number of indoor heads" required>
-                      <select
-                        required
-                        value={form.headCount}
-                        onChange={(e) =>
-                          update("headCount", parseInt(e.target.value, 10))
-                        }
-                        className={inputClass}
+                  {/* Systems */}
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-3">
+                      Select Your Systems
+                    </p>
+                    <div className="space-y-2.5">
+                      {/* Ductless */}
+                      <div
+                        className={cn(
+                          "rounded-xl border-2 p-3.5 transition-all",
+                          systems.has("ductless")
+                            ? "border-primary bg-stripe"
+                            : "border-gray-200 bg-white"
+                        )}
                       >
-                        {HEAD_COUNT_OPTIONS.map((n) => (
-                          <option key={n} value={n}>
-                            {n} head{n > 1 ? "s" : ""} — ${ductlessOneTimePrice(n)}
-                          </option>
-                        ))}
-                      </select>
-                      <p className="text-xs text-gray-500 mt-1">
-                        ${DUCTLESS_ONETIME_PRICING[1]} base. Extra heads beyond 4 at $
-                        {DUCTLESS_EXTRA_HEAD_PRICE} each.
-                      </p>
-                    </Field>
-                  )}
+                        <div className="flex items-center justify-between gap-3">
+                          <button
+                            type="button"
+                            onClick={() => toggleSystem("ductless")}
+                            className="flex items-center gap-3 cursor-pointer flex-1 text-left"
+                          >
+                            <div
+                              className={cn(
+                                "w-5 h-5 rounded border-2 flex items-center justify-center transition-colors shrink-0",
+                                systems.has("ductless")
+                                  ? "bg-primary border-primary"
+                                  : "border-gray-300 bg-white"
+                              )}
+                            >
+                              {systems.has("ductless") && (
+                                <Check className="w-3 h-3 text-white" strokeWidth={3} />
+                              )}
+                            </div>
+                            <div>
+                              <p className="font-semibold text-sm text-text">
+                                Ductless Mini-Split
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                From ${DUCTLESS_ONETIME_PRICING[1]}/visit
+                              </p>
+                            </div>
+                          </button>
+                          {systems.has("ductless") && (
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-gray-500 font-medium hidden sm:block">
+                                Heads:
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setDuctlessHeads((h) => Math.max(1, h - 1))
+                                }
+                                className="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:border-primary hover:text-primary transition-colors cursor-pointer"
+                                aria-label="Decrease heads"
+                              >
+                                <Minus className="w-3 h-3" />
+                              </button>
+                              <span className="font-heading font-bold text-text w-5 text-center tabular-nums">
+                                {ductlessHeads}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setDuctlessHeads((h) => Math.min(8, h + 1))
+                                }
+                                className="w-7 h-7 rounded-full border border-gray-300 flex items-center justify-center hover:border-primary hover:text-primary transition-colors cursor-pointer"
+                                aria-label="Increase heads"
+                              >
+                                <Plus className="w-3 h-3" />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
 
-                  {/* Price summary */}
-                  <div className="flex items-center justify-between bg-stripe rounded-card px-4 py-3">
-                    <span className="text-sm text-gray-600">Estimated price</span>
-                    <span className="font-heading text-2xl font-bold text-primary">
-                      ${price}
-                    </span>
+                      {/* HRV/ERV */}
+                      <button
+                        type="button"
+                        onClick={() => toggleSystem("hrv")}
+                        className={cn(
+                          "w-full rounded-xl border-2 p-3.5 flex items-center gap-3 text-left transition-all cursor-pointer",
+                          systems.has("hrv")
+                            ? "border-primary bg-stripe"
+                            : "border-gray-200 bg-white hover:border-gray-300"
+                        )}
+                      >
+                        <div
+                          className={cn(
+                            "w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors",
+                            systems.has("hrv")
+                              ? "bg-primary border-primary"
+                              : "border-gray-300 bg-white"
+                          )}
+                        >
+                          {systems.has("hrv") && (
+                            <Check className="w-3 h-3 text-white" strokeWidth={3} />
+                          )}
+                        </div>
+                        <div>
+                          <p className="font-semibold text-sm text-text">HRV/ERV</p>
+                          <p className="text-xs text-gray-500">
+                            ${SYSTEM_PLAN_PRICING.hrv.oneTimePrice}/visit
+                          </p>
+                        </div>
+                      </button>
+
+                      {/* Ducted */}
+                      <button
+                        type="button"
+                        onClick={() => toggleSystem("ducted")}
+                        className={cn(
+                          "w-full rounded-xl border-2 p-3.5 flex items-center gap-3 text-left transition-all cursor-pointer",
+                          systems.has("ducted")
+                            ? "border-primary bg-stripe"
+                            : "border-gray-200 bg-white hover:border-gray-300"
+                        )}
+                      >
+                        <div
+                          className={cn(
+                            "w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors",
+                            systems.has("ducted")
+                              ? "bg-primary border-primary"
+                              : "border-gray-300 bg-white"
+                          )}
+                        >
+                          {systems.has("ducted") && (
+                            <Check className="w-3 h-3 text-white" strokeWidth={3} />
+                          )}
+                        </div>
+                        <div>
+                          <p className="font-semibold text-sm text-text">
+                            Ducted Heat Pump
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            ${SYSTEM_PLAN_PRICING.ducted.oneTimePrice}/visit
+                          </p>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Bundle savings banner */}
+                  <AnimatePresence>
+                    {bundleSavings > 0 && (
+                      <motion.div
+                        key={bundleName}
+                        initial={{ opacity: 0, y: -6, height: 0 }}
+                        animate={{ opacity: 1, y: 0, height: "auto" }}
+                        exit={{ opacity: 0, y: -6, height: 0 }}
+                        transition={{ duration: 0.25 }}
+                      >
+                        <div className="flex items-start gap-3 bg-primary/10 border border-primary/20 rounded-card p-3.5">
+                          <Sparkles className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                          <div className="flex-1">
+                            <p className="text-sm font-semibold text-primary">
+                              You&apos;re saving ${bundleSavings} with a bundle!
+                            </p>
+                            <p className="text-xs text-gray-600 mt-0.5">
+                              {bundleName} — discount applied automatically below.
+                            </p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
+                  {/* Price breakdown */}
+                  <div className="bg-stripe rounded-card p-4 space-y-1.5">
+                    {hasDuctless && (
+                      <BreakdownRow
+                        label={`Ductless (${ductlessHeads} head${ductlessHeads === 1 ? "" : "s"})`}
+                        amount={baseDuctlessPrice}
+                      />
+                    )}
+                    {hasHrv && <BreakdownRow label="HRV/ERV" amount={baseHrvPrice} />}
+                    {hasDucted && <BreakdownRow label="Ducted" amount={baseDuctedPrice} />}
+                    {bundleSavings > 0 && (
+                      <div className="flex items-center justify-between text-sm font-medium text-primary">
+                        <span>Bundle savings</span>
+                        <span className="tabular-nums">−${bundleSavings}</span>
+                      </div>
+                    )}
+                    <div className="flex items-center justify-between pt-2 mt-1 border-t border-white">
+                      <span className="text-sm font-semibold text-text">Estimated total</span>
+                      <span className="font-heading text-2xl font-bold text-primary tabular-nums">
+                        ${total}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Name */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Field label="First name" required>
+                    <Field label="First Name" required>
                       <input
                         type="text"
                         required
@@ -302,7 +463,7 @@ export function BookingModal() {
                         className={inputClass}
                       />
                     </Field>
-                    <Field label="Last name" required>
+                    <Field label="Last Name" required>
                       <input
                         type="text"
                         required
@@ -314,8 +475,7 @@ export function BookingModal() {
                     </Field>
                   </div>
 
-                  {/* Phone */}
-                  <Field label="Phone number" required>
+                  <Field label="Phone Number" required>
                     <input
                       type="tel"
                       required
@@ -327,9 +487,8 @@ export function BookingModal() {
                     />
                   </Field>
 
-                  {/* Address */}
                   <div className="grid grid-cols-1 sm:grid-cols-[2fr_1fr] gap-4">
-                    <Field label="Street address" required>
+                    <Field label="Street Address" required>
                       <input
                         type="text"
                         required
@@ -374,7 +533,7 @@ export function BookingModal() {
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Field label="Postal / ZIP code" required>
+                    <Field label="Postal / ZIP Code" required>
                       <input
                         type="text"
                         required
@@ -396,11 +555,10 @@ export function BookingModal() {
                     </Field>
                   </div>
 
-                  {/* Notes */}
-                  <Field label="Notes (optional)">
+                  <Field label="Notes (Optional)">
                     <textarea
                       rows={3}
-                      placeholder="Anything we should know — preferred time, number of units, access instructions…"
+                      placeholder="Anything we should know — preferred time, access instructions…"
                       value={form.notes}
                       onChange={(e) => update("notes", e.target.value)}
                       className={`${inputClass} resize-none`}
@@ -426,7 +584,7 @@ export function BookingModal() {
                         Submitting…
                       </>
                     ) : (
-                      <>Request booking</>
+                      <>Request Booking</>
                     )}
                   </Button>
 
@@ -441,6 +599,15 @@ export function BookingModal() {
         </>
       )}
     </AnimatePresence>
+  );
+}
+
+function BreakdownRow({ label, amount }: { label: string; amount: number }) {
+  return (
+    <div className="flex items-center justify-between text-sm text-gray-700">
+      <span>{label}</span>
+      <span className="tabular-nums text-gray-500">${amount}</span>
+    </div>
   );
 }
 

@@ -8,8 +8,8 @@ import { COMPANY } from "@/lib/constants";
 const badges = [
   {
     icon: Shield,
-    label: `BBB ${COMPANY.bbbRating}-rated`,
-    color: "text-bbb",
+    label: "Satisfaction Guaranteed",
+    color: "text-primary",
   },
   {
     icon: Star,

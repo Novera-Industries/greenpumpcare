@@ -10,7 +10,7 @@ type FeatureRow = {
 
 const FEATURES: FeatureRow[] = [
   {
-    label: "Deep cleans per year",
+    label: "Service visits per year",
     Essential: "1",
     Comfort: "2",
     Complete: "4",
@@ -34,7 +34,7 @@ const FEATURES: FeatureRow[] = [
     Complete: true,
   },
   {
-    label: "Price lock guarantee (12 mo)",
+    label: "Price lock guarantee\n(12 months)",
     Essential: true,
     Comfort: true,
     Complete: true,
@@ -133,7 +133,7 @@ export function TierComparison() {
                   i % 2 === 0 ? "bg-white" : "bg-bg-light"
                 }`}
               >
-                <div className="px-4 py-4 text-sm text-gray-700 flex items-center">
+                <div className="px-4 py-4 text-sm text-gray-700 flex items-center whitespace-pre-line">
                   {row.label}
                 </div>
                 <Cell value={row.Essential} />

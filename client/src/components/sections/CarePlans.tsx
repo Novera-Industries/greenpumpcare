@@ -103,7 +103,7 @@ export function CarePlans() {
                       viewport={{ once: true }}
                       transition={{ delay: i * 0.08 }}
                       className={cn(
-                        "flex items-start gap-2 text-sm",
+                        "flex items-start gap-2 text-sm whitespace-pre-line",
                         plan.isPopular ? "text-white/90" : "text-gray-700"
                       )}
                     >
