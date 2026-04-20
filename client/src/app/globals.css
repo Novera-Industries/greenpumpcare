@@ -309,6 +309,22 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Housecall Pro chat container — keep inside viewport on small       */
+/*  screens so the close X isn't cut off                               */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 480px) {
+  #proChatIframeContainer {
+    width: calc(100vw - 16px) !important;
+    max-width: 400px !important;
+    right: 8px !important;
+    height: calc(100dvh - 16px) !important;
+    max-height: 640px !important;
+    bottom: 8px !important;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /*  Housecall Pro booking modal overlay                                */
 /* ------------------------------------------------------------------ */
 

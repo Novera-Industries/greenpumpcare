@@ -206,7 +206,7 @@ export function BookingModal() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[100] bg-black/55"
+            className="fixed inset-0 z-[1300] bg-black/55"
             onClick={() => setOpen(false)}
           />
           <motion.div
@@ -217,11 +217,11 @@ export function BookingModal() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[101] flex items-start sm:items-center justify-center p-4 overflow-y-auto pointer-events-none"
+            className="fixed inset-0 z-[1301] flex items-start sm:items-center justify-center p-4 pointer-events-none"
           >
-            <div className="w-full max-w-xl bg-white rounded-card shadow-elevated my-6 sm:my-auto pointer-events-auto">
+            <div className="w-full max-w-xl bg-white rounded-card shadow-elevated my-6 sm:my-auto pointer-events-auto max-h-[calc(100dvh-2rem)] flex flex-col overflow-hidden">
               {/* Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
                 <h2
                   id="booking-modal-title"
                   className="font-heading text-xl font-semibold text-text"
@@ -239,7 +239,7 @@ export function BookingModal() {
               </div>
 
               {status === "success" ? (
-                <div className="p-8 text-center">
+                <div className="p-8 text-center overflow-y-auto">
                   <CheckCircle2 className="w-14 h-14 text-primary mx-auto mb-5" />
                   <h3 className="font-heading text-2xl font-semibold text-text mb-3">
                     Booking Request Received
@@ -260,7 +260,7 @@ export function BookingModal() {
                   </Button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="p-6 space-y-5">
+                <form onSubmit={handleSubmit} className="p-6 space-y-5 overflow-y-auto">
                   {/* Systems */}
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-3">
