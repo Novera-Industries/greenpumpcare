@@ -7,7 +7,6 @@ import { StickyPhoneCTA } from "@/components/layout/StickyPhoneCTA";
 import { LocalBusinessSchema } from "@/components/seo/LocalBusinessSchema";
 import { FAQSchema } from "@/components/seo/FAQSchema";
 import { BookingModal } from "@/components/sections/BookingModal";
-import { ChatBubble } from "@/components/layout/ChatBubble";
 import { COMPANY } from "@/lib/constants";
 import "./globals.css";
 
@@ -86,7 +85,6 @@ export default function RootLayout({
         <LocalBusinessSchema />
         <FAQSchema />
         <BookingModal />
-        <ChatBubble />
         <Script
           id="housecall-pro-chat-bubble"
           src="https://chat.housecallpro.com/proChat.js"
