@@ -17,7 +17,6 @@ import {
 import { cn } from "@/lib/utils";
 
 type Status = "idle" | "submitting" | "success" | "error";
-type BookingMode = "onetime" | "care_plan";
 
 interface FormFields {
   firstName: string;
@@ -47,20 +46,18 @@ const INITIAL_FORM: FormFields = {
 
 export function BookingModal() {
   const [open, setOpen] = useState(false);
-  const [mode, setMode] = useState<BookingMode>("onetime");
   const [systems, setSystems] = useState<Set<SystemType>>(new Set(["ductless"]));
   const [ductlessHeads, setDuctlessHeads] = useState(1);
-  const [carePlanTier, setCarePlanTier] = useState<PlanTier>("Comfort");
+  const [carePlanInterest, setCarePlanInterest] = useState<PlanTier | null>(null);
   const [form, setForm] = useState<FormFields>(INITIAL_FORM);
   const [status, setStatus] = useState<Status>("idle");
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const handler = () => {
-      setMode("onetime");
       setSystems(new Set(["ductless"]));
       setDuctlessHeads(1);
-      setCarePlanTier("Comfort");
+      setCarePlanInterest(null);
       setForm(INITIAL_FORM);
       setStatus("idle");
       setErrorMessage("");
@@ -143,47 +140,41 @@ export function BookingModal() {
       quantity: number;
     }> = [];
 
-    if (mode === "care_plan") {
-      const plan = CARE_PLANS.find((p) => p.name === carePlanTier);
+    if (systems.has("ductless")) {
       services.push({
-        name: `Care Plan inquiry — ${carePlanTier} ($${plan?.monthlyPrice ?? 0}/mo)`,
-        description:
-          plan?.description ??
-          "Customer is interested in a Care Plan subscription. Reach out to build a custom solution.",
-        priceCents: 0,
+        name: `Ductless mini-split deep clean — ${ductlessHeads} head${ductlessHeads > 1 ? "s" : ""}`,
+        description: "Complete disassembly, coil wash, antimicrobial treatment.",
+        priceCents: ductlessPrice * 100,
         quantity: 1,
       });
-    } else {
-      if (systems.has("ductless")) {
-        services.push({
-          name: `Ductless mini-split deep clean — ${ductlessHeads} head${ductlessHeads > 1 ? "s" : ""}`,
-          description: "Complete disassembly, coil wash, antimicrobial treatment.",
-          priceCents: ductlessPrice * 100,
-          quantity: 1,
-        });
-      }
-      if (systems.has("hrv")) {
-        services.push({
-          name: "HRV/ERV cleaning",
-          description: "Core, filters, and ductwork. Premium HRV service.",
-          priceCents: hrvPrice * 100,
-          quantity: 1,
-        });
-      }
-      if (systems.has("ducted")) {
-        services.push({
-          name: "Ducted system deep clean",
-          description: "Full ducted system service with coil and component cleaning.",
-          priceCents: ductedPrice * 100,
-          quantity: 1,
-        });
-      }
+    }
+    if (systems.has("hrv")) {
+      services.push({
+        name: "HRV/ERV cleaning",
+        description: "Core, filters, and ductwork. Premium HRV service.",
+        priceCents: hrvPrice * 100,
+        quantity: 1,
+      });
+    }
+    if (systems.has("ducted")) {
+      services.push({
+        name: "Ducted system deep clean",
+        description: "Full ducted system service with coil and component cleaning.",
+        priceCents: ductedPrice * 100,
+        quantity: 1,
+      });
     }
 
-    const carePlanPrefix =
-      mode === "care_plan"
-        ? `Care Plan inquiry (${carePlanTier}). Customer would like a member to reach out to build a custom solution.${form.notes ? "\n\n" : ""}`
-        : "";
+    // If the customer flagged interest in a Care Plan, prefix the notes
+    // so the technician / office staff know to bring it up.
+    let notesWithInterest = form.notes;
+    if (carePlanInterest) {
+      const plan = CARE_PLANS.find((p) => p.name === carePlanInterest);
+      const interestLine = `★ Customer is interested in our ${carePlanInterest} Care Plan ($${plan?.monthlyPrice ?? ""}/mo). Please bring it up during the visit.`;
+      notesWithInterest = form.notes
+        ? `${interestLine}\n\n${form.notes}`
+        : interestLine;
+    }
 
     const payload = {
       firstName: form.firstName,
@@ -196,7 +187,7 @@ export function BookingModal() {
       zip: form.zip,
       country: form.country,
       services,
-      notes: carePlanPrefix + form.notes,
+      notes: notesWithInterest,
     };
 
     try {
@@ -267,14 +258,15 @@ export function BookingModal() {
                 <div className="p-8 text-center overflow-y-auto">
                   <CheckCircle2 className="w-14 h-14 text-primary mx-auto mb-5" />
                   <h3 className="font-heading text-2xl font-semibold text-text mb-3">
-                    {mode === "care_plan" ? "Request Received" : "Booking Request Received"}
+                    Booking Request Received
                   </h3>
                   <p className="text-gray-600 leading-relaxed mb-6 max-w-md mx-auto">
-                    Thanks {form.firstName}.{" "}
-                    {mode === "care_plan"
-                      ? `A member will reach out within one business day to talk through the ${carePlanTier} plan and build a custom solution.`
-                      : "We'll reach out within one business day to confirm your appointment time."}{" "}
-                    You can also call us at{" "}
+                    Thanks {form.firstName}. We&apos;ll reach out within one
+                    business day to confirm your appointment time
+                    {carePlanInterest
+                      ? ` and chat about the ${carePlanInterest} Care Plan`
+                      : ""}
+                    . You can also call us at{" "}
                     <a
                       href={COMPANY.phoneHref}
                       className="text-primary font-semibold hover:underline"
@@ -289,117 +281,6 @@ export function BookingModal() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="p-6 space-y-5 overflow-y-auto">
-                  {/* Mode toggle */}
-                  <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-3">
-                      What Can We Help With?
-                    </p>
-                    <div className="grid grid-cols-2 gap-2.5">
-                      <button
-                        type="button"
-                        onClick={() => setMode("onetime")}
-                        className={cn(
-                          "relative rounded-xl border-2 p-3.5 text-left transition-all cursor-pointer",
-                          mode === "onetime"
-                            ? "border-primary bg-stripe ring-2 ring-primary"
-                            : "border-gray-200 bg-white hover:border-gray-300"
-                        )}
-                      >
-                        <p className="font-semibold text-sm text-text">One-Time Service</p>
-                        <p className="text-xs text-gray-500 mt-0.5">
-                          Book a single visit
-                        </p>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setMode("care_plan")}
-                        className={cn(
-                          "relative rounded-xl border-2 p-3.5 text-left transition-all cursor-pointer",
-                          mode === "care_plan"
-                            ? "border-primary bg-stripe ring-2 ring-primary"
-                            : "border-gray-200 bg-white hover:border-gray-300"
-                        )}
-                      >
-                        <p className="font-semibold text-sm text-text">Subscription</p>
-                        <p className="text-xs text-gray-500 mt-0.5">
-                          Monthly Care Plan
-                        </p>
-                      </button>
-                    </div>
-                  </div>
-
-                  {mode === "care_plan" && (
-                    <>
-                      <div className="bg-stripe border border-primary/20 rounded-card p-4">
-                        <p className="text-sm text-text leading-relaxed">
-                          <strong>Interested in a subscription?</strong> Choose
-                          the plan you&apos;d like to talk about and a member
-                          will reach out to build your custom solution.
-                        </p>
-                      </div>
-
-                      <div>
-                        <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-3">
-                          Choose A Care Plan
-                        </p>
-                        <div className="space-y-2.5">
-                          {CARE_PLANS.map((plan) => {
-                            const selected = carePlanTier === plan.name;
-                            return (
-                              <button
-                                key={plan.name}
-                                type="button"
-                                onClick={() => setCarePlanTier(plan.name)}
-                                className={cn(
-                                  "w-full rounded-xl border-2 p-3.5 flex items-start gap-3 text-left transition-all cursor-pointer",
-                                  selected
-                                    ? "border-primary bg-stripe"
-                                    : "border-gray-200 bg-white hover:border-gray-300"
-                                )}
-                              >
-                                <div
-                                  className={cn(
-                                    "w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-colors",
-                                    selected
-                                      ? "bg-primary border-primary"
-                                      : "border-gray-300 bg-white"
-                                  )}
-                                >
-                                  {selected && (
-                                    <div className="w-1.5 h-1.5 rounded-full bg-white" />
-                                  )}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-baseline justify-between gap-2 mb-1">
-                                    <p className="font-semibold text-sm text-text">
-                                      {plan.name}
-                                      {plan.isPopular && (
-                                        <span className="ml-2 inline-block text-[9px] font-bold uppercase tracking-wider bg-primary/10 text-primary px-1.5 py-0.5 rounded-pill align-middle">
-                                          Popular
-                                        </span>
-                                      )}
-                                    </p>
-                                    <p className="font-heading font-bold text-primary text-sm tabular-nums shrink-0">
-                                      ${plan.monthlyPrice}
-                                      <span className="text-xs text-gray-500 font-normal">
-                                        /mo
-                                      </span>
-                                    </p>
-                                  </div>
-                                  <p className="text-xs text-gray-500 leading-relaxed">
-                                    {plan.description}
-                                  </p>
-                                </div>
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    </>
-                  )}
-
-                  {mode === "onetime" && (
-                  <>
                   {/* Systems */}
                   <div>
                     <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-3">
@@ -589,8 +470,66 @@ export function BookingModal() {
                       </span>
                     </div>
                   </div>
-                  </>
-                  )}
+
+                  {/* Care plan interest (optional) */}
+                  <div className="rounded-xl border border-gray-200 bg-white p-4">
+                    <p className="text-sm font-semibold text-text mb-1">
+                      Curious about a Care Plan?
+                    </p>
+                    <p className="text-xs text-gray-500 leading-relaxed mb-3">
+                      Totally optional. Pick the one you&apos;d like to hear
+                      more about and we&apos;ll bring it up when we reach out.
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      {CARE_PLANS.map((plan) => {
+                        const selected = carePlanInterest === plan.name;
+                        return (
+                          <button
+                            key={plan.name}
+                            type="button"
+                            onClick={() =>
+                              setCarePlanInterest(selected ? null : plan.name)
+                            }
+                            className={cn(
+                              "rounded-lg border-2 px-3 py-2.5 text-left transition-all cursor-pointer",
+                              selected
+                                ? "border-primary bg-stripe"
+                                : "border-gray-200 bg-white hover:border-gray-300"
+                            )}
+                          >
+                            <div className="flex items-center justify-between gap-2">
+                              <p className="font-semibold text-sm text-text">
+                                {plan.name}
+                                {plan.isPopular && (
+                                  <span className="ml-1.5 inline-block text-[9px] font-bold uppercase tracking-wider bg-primary/10 text-primary px-1.5 py-0.5 rounded-pill align-middle">
+                                    Popular
+                                  </span>
+                                )}
+                              </p>
+                              <p className="font-heading font-bold text-primary text-sm tabular-nums shrink-0">
+                                ${plan.monthlyPrice}
+                                <span className="text-[10px] text-gray-500 font-normal">
+                                  /mo
+                                </span>
+                              </p>
+                            </div>
+                          </button>
+                        );
+                      })}
+                      <button
+                        type="button"
+                        onClick={() => setCarePlanInterest(null)}
+                        className={cn(
+                          "rounded-lg border-2 px-3 py-2.5 text-center text-sm font-medium transition-all cursor-pointer sm:col-span-2",
+                          carePlanInterest === null
+                            ? "border-gray-300 bg-gray-50 text-text"
+                            : "border-gray-200 bg-white text-gray-500 hover:border-gray-300"
+                        )}
+                      >
+                        Not right now, thanks
+                      </button>
+                    </div>
+                  </div>
 
                   {/* Name */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -725,7 +664,7 @@ export function BookingModal() {
                         Submitting…
                       </>
                     ) : (
-                      <>{mode === "care_plan" ? "Request Callback" : "Request Booking"}</>
+                      <>Request Booking</>
                     )}
                   </Button>
 
