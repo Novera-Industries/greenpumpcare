@@ -82,8 +82,24 @@ The server needs to be hosted at a **public HTTPS URL** so both HCP and Quo can 
 HCP_API_KEY=<set from HouseCall Pro MAX account>
 QUO_API_KEY=<set from Quo/OpenPhone API settings>
 HCP_WEBHOOK_SECRET=<from HCP webhook settings after setup>
+MONGO_URI=<MongoDB connection string — required>
+MONGO_DB_NAME=hcp_quo          # optional, default "hcp_quo"
 FLASK_PORT=5000
 ```
+
+### MongoDB Setup (Atlas — free tier)
+1. Create an account at **mongodb.com/cloud/atlas** and build a new
+   cluster (M0 shared tier = $0/mo, 512 MB).
+2. Database Access → add a user (strong password).
+3. Network Access → allow your host's outbound IPs, or `0.0.0.0/0` for
+   quick start (tighten later).
+4. Connect → "Drivers" → copy the `mongodb+srv://` connection string,
+   replace `<username>` / `<password>`, and paste into `MONGO_URI`.
+
+The server creates collections + indexes on first run:
+- `dedup` — webhook dedup with a TTL index (auto-expiry)
+- `scheduled_sms` — delayed SMS queue, processed by a background worker
+- `events` — audit log of every webhook received (source + type + payload)
 
 ---
 
@@ -182,7 +198,9 @@ All message templates are in `config.py` under `SMS_TEMPLATES`. Edit the text, s
 
 ## Safeguards Built In
 
-- **5-minute dedup window**: Same event won't trigger duplicate SMS
+- **Persistent 5-minute dedup** (MongoDB TTL index): same event won't trigger duplicate SMS, survives restarts
+- **Persistent delayed-SMS queue**: the 2-hour Care Plan upsell is stored in MongoDB and processed by a background worker — no SMS is lost if the server restarts
+- **Full webhook audit log** (`events` collection): every inbound webhook payload is stored for debugging / replay
 - **Thread-safe**: Concurrent webhooks handled safely
 - **Graceful errors**: Returns 200 to prevent webhook retry storms
 - **No customer texts on payment failure**: Only internal logging

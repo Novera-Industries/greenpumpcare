@@ -23,6 +23,7 @@ from dateutil import parser as dateutil_parser
 from flask import Flask, jsonify, request
 
 import config
+import db
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -42,34 +43,18 @@ log = logging.getLogger("hcp_quo")
 app = Flask(__name__)
 
 # ---------------------------------------------------------------------------
-# In-memory deduplication cache
-# key  → timestamp (float, Unix epoch) of first trigger
+# Deduplication — backed by MongoDB TTL collection (see db.py)
 # ---------------------------------------------------------------------------
-
-_dedup_cache: dict[str, float] = {}
-_dedup_lock = threading.Lock()
 
 
 def _is_duplicate(key: str) -> bool:
-    """Return True if *key* was seen within the dedup window."""
-    now = time.monotonic()
-    with _dedup_lock:
-        if key in _dedup_cache:
-            if now - _dedup_cache[key] < config.DEDUP_WINDOW_SECONDS:
-                return True
-            # Expired entry — treat as new
-        _dedup_cache[key] = now
-    return False
+    """Return True if *key* was seen within DEDUP_WINDOW_SECONDS."""
+    return db.is_duplicate(key, config.DEDUP_WINDOW_SECONDS)
 
 
 def _purge_dedup_cache() -> None:
-    """Remove expired entries (called opportunistically)."""
-    now = time.monotonic()
-    with _dedup_lock:
-        expired = [k for k, t in _dedup_cache.items()
-                   if now - t >= config.DEDUP_WINDOW_SECONDS]
-        for k in expired:
-            del _dedup_cache[k]
+    """Kept as a no-op for compatibility — TTL index prunes automatically."""
+    return None
 
 # ---------------------------------------------------------------------------
 # HTTP helper — shared session with auth headers
@@ -277,19 +262,56 @@ def send_quo_sms(to_number: str, message: str) -> bool:
 
 def delayed_sms(delay_seconds: int, to_number: str, message: str) -> None:
     """
-    Schedule an SMS to be sent after *delay_seconds* using a daemon thread.
-    The call returns immediately; the SMS fires in the background.
+    Persist an SMS to the MongoDB scheduled_sms collection. A background
+    worker (see _scheduled_sms_worker) polls and sends when due. Survives
+    restarts; safe across multiple gunicorn workers (atomic claim).
     """
-    def _send():
-        send_quo_sms(to_number, message)
-
-    t = threading.Timer(delay_seconds, _send)
-    t.daemon = True
-    t.start()
+    doc_id = db.schedule_sms(to_number, message, delay_seconds)
     log.info(
-        "Delayed SMS scheduled: %.0fs delay → %s | preview: %.60s…",
-        delay_seconds, to_number, message,
+        "Delayed SMS queued (id=%s, %ds delay) → %s | preview: %.60s…",
+        doc_id, delay_seconds, to_number, message,
     )
+
+
+# ---------------------------------------------------------------------------
+# Background worker — processes due scheduled SMS
+# ---------------------------------------------------------------------------
+
+_SCHEDULER_POLL_SECONDS = 15
+_scheduler_started = False
+_scheduler_lock = threading.Lock()
+
+
+def _scheduled_sms_worker() -> None:
+    log.info("scheduled_sms worker started (poll=%ds)", _SCHEDULER_POLL_SECONDS)
+    while True:
+        try:
+            for job in db.claim_due_sms(limit=25):
+                to = job.get("to_number")
+                msg = job.get("message")
+                try:
+                    ok = send_quo_sms(to, msg)
+                    if ok:
+                        db.mark_sms_sent(job["_id"])
+                    else:
+                        db.mark_sms_failed(job["_id"], "send_quo_sms returned False")
+                except Exception as exc:
+                    log.exception("scheduled SMS send error")
+                    db.mark_sms_failed(job["_id"], str(exc))
+        except Exception:
+            log.exception("scheduled_sms worker tick failed")
+        time.sleep(_SCHEDULER_POLL_SECONDS)
+
+
+def _start_scheduler_once() -> None:
+    global _scheduler_started
+    with _scheduler_lock:
+        if _scheduler_started:
+            return
+        t = threading.Thread(target=_scheduled_sms_worker, daemon=True,
+                             name="scheduled_sms_worker")
+        t.start()
+        _scheduler_started = True
 
 
 def find_quo_contact_by_phone(phone: str) -> dict | None:
@@ -1152,9 +1174,15 @@ def _handle_quo_message_received(data: dict) -> None:
 
 @app.route("/health", methods=["GET"])
 def health():
-    """Simple liveness probe."""
-    _purge_dedup_cache()  # tidy up on each health check
-    return jsonify({"status": "ok", "service": "hcp-quo-integration"}), 200
+    """Liveness probe — also reports MongoDB connectivity."""
+    mongo_ok = db.ping()
+    status_code = 200 if mongo_ok else 503
+    return jsonify({
+        "status": "ok" if mongo_ok else "degraded",
+        "service": "hcp-quo-integration",
+        "mongo": mongo_ok,
+        "scheduler": _scheduler_started,
+    }), status_code
 
 
 @app.route("/webhooks/hcp", methods=["POST"])
@@ -1183,6 +1211,8 @@ def webhook_hcp():
     data = payload.get("data") or payload
 
     log.info("HCP webhook received: event_type=%s", event_type)
+    db.log_event("hcp", event_type, payload)
+    _start_scheduler_once()
 
     handler_map = {
         "customer.created":                      _handle_customer_created,
@@ -1226,6 +1256,8 @@ def webhook_quo():
     data = payload.get("data") or payload
 
     log.info("Quo webhook received: type=%s", event_type)
+    db.log_event("quo", event_type, payload)
+    _start_scheduler_once()
 
     handler_map = {
         "call.completed":          _handle_quo_call_completed,
@@ -1253,8 +1285,16 @@ if __name__ == "__main__":
         "Starting HCP ↔ Quo Integration Server on %s:%s (debug=%s)",
         config.FLASK_HOST, config.FLASK_PORT, config.FLASK_DEBUG,
     )
+    _start_scheduler_once()
     app.run(
         host=config.FLASK_HOST,
         port=config.FLASK_PORT,
         debug=config.FLASK_DEBUG,
     )
+else:
+    # Running under gunicorn — kick the background worker on import so
+    # queued SMS continue to send between restarts.
+    try:
+        _start_scheduler_once()
+    except Exception:
+        log.exception("scheduler autostart failed — will retry on first webhook")
