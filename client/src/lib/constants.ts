@@ -86,7 +86,7 @@ export const SERVICES: Service[] = [
       "Our signature service. Complete disassembly, coil wash, antimicrobial treatment, and before/after photo documentation. One hour or more per head. Not a quick spray-and-go.",
     shortDescription:
       "Complete disassembly, deep coil wash, and antimicrobial treatment.",
-    duration: "1+ hour per head",
+    duration: "1+ Hour Per Head",
     features: [
       "Full disassembly of indoor unit (panels, filters, louvers)",
       "High-pressure evaporator coil wash",
@@ -108,7 +108,7 @@ export const SERVICES: Service[] = [
       "Comprehensive ducted system service with full coil and component cleaning. Covers your entire ducted heat pump system from intake to output.",
     shortDescription:
       "Full ducted system service with complete coil and component cleaning.",
-    duration: "2–3 hours",
+    duration: "2–3 Hours",
     features: [
       "Evaporator coil deep clean",
       "Blower assembly cleaning",
@@ -131,7 +131,7 @@ export const SERVICES: Service[] = [
       "The only premium HRV/ERV cleaning service in Halifax. Core, filters, and ductwork. Keeping your ventilation system running efficiently and your indoor air fresh.",
     shortDescription:
       "Core, filters, and ductwork. The only premium HRV service in Halifax.",
-    duration: "0.5–1 hours",
+    duration: "0.5–1 Hours",
     features: [
       "Heat exchange core removal and deep cleaning",
       "Filter assessment and replacement recommendation",
@@ -305,37 +305,37 @@ export interface Differentiator {
 
 export const DIFFERENTIATORS: Differentiator[] = [
   {
-    title: "1+ hour deep cleans",
+    title: "1+ Hour Deep Cleans",
     description:
       "Complete disassembly and thorough cleaning. Not a 15-minute spray-and-go.",
     icon: "Clock",
   },
   {
-    title: "Before/after photos",
+    title: "Before/After Photos",
     description:
       "Every service includes photo documentation so you can see the difference.",
     icon: "Camera",
   },
   {
-    title: "Eco-friendly products",
+    title: "Eco-Friendly Products",
     description:
       "Non-toxic, environmentally responsible cleaning solutions safe for families and pets.",
     icon: "Leaf",
   },
   {
-    title: "Warranty compliant",
+    title: "Warranty Compliant",
     description:
       "Service performed to manufacturer specifications, preserving your warranty coverage.",
     icon: "ShieldCheck",
   },
   {
-    title: "Extended hours",
+    title: "Extended Hours",
     description:
       "Mon–Fri 8 am – 8 pm, Sat 10 am – 5 pm. We work around your schedule.",
     icon: "CalendarClock",
   },
   {
-    title: "All brands serviced",
+    title: "All Brands Serviced",
     description:
       "We service every make and model. Mitsubishi, Daikin, Fujitsu, LG, and more.",
     icon: "Wrench",

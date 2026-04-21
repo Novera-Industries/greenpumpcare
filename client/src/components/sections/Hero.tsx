@@ -30,8 +30,8 @@ import { openBookingModal } from "@/lib/housecallpro";
 /* ------------------------------------------------------------------ */
 
 const stats = [
-  { value: 38, suffix: "+", label: "5-star reviews" },
-  { value: 99, suffix: "+", label: "Jobs completed" },
+  { value: 38, suffix: "+", label: "5-Star Reviews" },
+  { value: 99, suffix: "+", label: "Jobs Completed" },
   { value: 100, suffix: "%", label: "Satisfaction" },
 ];
 
@@ -387,7 +387,7 @@ export function Hero() {
             {[
               { icon: Shield, label: "Satisfaction Guaranteed" },
               { icon: Award, label: "Licensed & Insured" },
-              { icon: Leaf, label: "Eco-friendly" },
+              { icon: Leaf, label: "Eco-Friendly" },
             ].map((badge) => (
               <motion.li
                 key={badge.label}

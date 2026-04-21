@@ -49,25 +49,25 @@ const promisePillars = [
 const values = [
   {
     icon: Sparkles,
-    title: "Complete disassembly, always",
+    title: "Complete Disassembly, Always",
     body:
       "Every service is a full tear-down. Panels off, barrel fan out, coil accessible. No shortcut deep cleans.",
   },
   {
     icon: Leaf,
-    title: "Eco-friendly, non-toxic",
+    title: "Eco-Friendly, Non-Toxic",
     body:
       "Biodegradable products safe for kids, pets, and allergy-sensitive households. Never harsh chemicals.",
   },
   {
     icon: Award,
-    title: "Warranty-compliant",
+    title: "Warranty-Compliant",
     body:
       "Service to manufacturer specifications. Digital service records delivered for your warranty file.",
   },
   {
     icon: Heart,
-    title: "One thing, done thoroughly",
+    title: "One Thing, Done Thoroughly",
     body:
       "Heat pump cleaning is our entire focus. Not an add-on. Not a side hustle. Singular specialty, deeper expertise.",
   },
@@ -160,8 +160,8 @@ export function AboutContent() {
         accent="done right."
         subtitle="We're a small, local team obsessed with one thing: getting your heat pump spotless. Five stars, thirty-eight reviews, zero unhappy customers."
         stats={[
-          { value: `${COMPANY.googleRating}★`, label: "Google rating" },
-          { value: `${COMPANY.googleReviewCount}`, label: "5-star reviews" },
+          { value: `${COMPANY.googleRating}★`, label: "Google Rating" },
+          { value: `${COMPANY.googleReviewCount}`, label: "5-Star Reviews" },
           { value: "100%", label: "Satisfaction" },
         ]}
       />

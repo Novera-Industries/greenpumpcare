@@ -92,6 +92,19 @@ export default function RootLayout({
           data-color="#09A47A"
           data-organization="68da54a6-10d0-473f-b040-00c32a597360"
         />
+        {/* Google Analytics (GA4) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-492428405"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-492428405');
+          `}
+        </Script>
       </body>
     </html>
   );

@@ -21,7 +21,7 @@ const contactCards = [
     title: "Email",
     value: COMPANY.email,
     href: COMPANY.emailHref,
-    description: "We reply within 24 hours",
+    description: "We Reply Within 24 Hours",
   },
   {
     icon: MapPin,
@@ -54,7 +54,7 @@ export function ContactContent() {
         }
         badges={[
           { icon: Phone, label: "(782) 830-5900" },
-          { icon: Clock, label: "Reply within 24 hours" },
+          { icon: Clock, label: "Reply Within 24 Hours" },
           { icon: MapPin, label: "Halifax, NS" },
         ]}
       />

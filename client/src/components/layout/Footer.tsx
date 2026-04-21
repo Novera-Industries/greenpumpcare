@@ -51,7 +51,7 @@ const socials = [
 const trustBadges = [
   { icon: Shield, label: "Satisfaction Guaranteed" },
   { icon: Award, label: "Licensed & Insured" },
-  { icon: Leaf, label: "Eco-friendly" },
+  { icon: Leaf, label: "Eco-Friendly" },
 ];
 
 const hoursSchedule = [

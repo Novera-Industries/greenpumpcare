@@ -13,12 +13,12 @@ const badges = [
   },
   {
     icon: Star,
-    label: `${COMPANY.googleRating} stars (${COMPANY.googleReviewCount} reviews)`,
+    label: `${COMPANY.googleRating} Stars (${COMPANY.googleReviewCount} Reviews)`,
     color: "text-star",
   },
   {
     icon: Leaf,
-    label: "Eco-friendly products",
+    label: "Eco-Friendly Products",
     color: "text-leaf",
   },
   {

@@ -16,7 +16,19 @@ export const metadata: Metadata = generatePageMetadata({
 export default function DuctedSystemPage() {
   return (
     <>
-      <ServicePageContent service={service} steps={DUCTED_STEPS} faqItems={GENERAL_FAQ} />
+      <ServicePageContent
+        service={service}
+        steps={DUCTED_STEPS}
+        faqItems={GENERAL_FAQ}
+        photos={{
+          hero: "/images/services/ducted-hero.jpg",
+          heroAlt: "Ducted heat pump evaporator coil exposed during a deep clean",
+          before: "/images/services/ducted-before-v2.jpg",
+          beforeAlt: "Dust-caked ducted system blower drum before cleaning",
+          after: "/images/services/ducted-after-v2.jpg",
+          afterAlt: "Ducted system blower fitted with a fresh filter after GreenPump Care service",
+        }}
+      />
       <ServiceSchema service={service} />
     </>
   );
