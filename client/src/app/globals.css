@@ -309,37 +309,18 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Mobile marquee (auto-scrolling carousel)                           */
+/*  Mobile marquee (touch-pausable, swipeable carousel)                */
 /* ------------------------------------------------------------------ */
 
-@keyframes mobile-marquee-forward {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-@keyframes mobile-marquee-reverse {
-  from { transform: translateX(-50%); }
-  to { transform: translateX(0); }
-}
-
 .mobile-marquee {
-  mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 
-.mobile-marquee-forward {
-  animation: mobile-marquee-forward linear infinite;
-}
-
-.mobile-marquee-reverse {
-  animation: mobile-marquee-reverse linear infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mobile-marquee-forward,
-  .mobile-marquee-reverse {
-    animation: none;
-  }
+.mobile-marquee::-webkit-scrollbar {
+  display: none;
 }
 
 /* ------------------------------------------------------------------ */
