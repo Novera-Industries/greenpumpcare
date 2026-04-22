@@ -53,8 +53,13 @@ export function PricingContent() {
             ))}
           </StaggerContainer>
 
-          {/* Mobile: forward marquee */}
-          <MobileMarquee speed={46} className="mb-8" itemClassName="w-[270px] shrink-0 flex">
+          {/* Mobile: forward marquee (pause + swipe on touch) */}
+          <MobileMarquee
+            speed={46}
+            pauseOnTouch
+            className="mb-8"
+            itemClassName="w-[270px] shrink-0 flex"
+          >
             {SERVICES.map((service) => (
               <PricingServiceCard key={service.id} service={service} />
             ))}
@@ -71,8 +76,13 @@ export function PricingContent() {
                 <PricingBundleCard key={bundle.id} bundle={bundle} />
               ))}
             </div>
-            {/* Mobile: reverse marquee */}
-            <MobileMarquee reverse speed={50} itemClassName="w-[280px] shrink-0 flex">
+            {/* Mobile: reverse marquee (pause + swipe on touch) */}
+            <MobileMarquee
+              reverse
+              speed={50}
+              pauseOnTouch
+              itemClassName="w-[280px] shrink-0 flex"
+            >
               {BUNDLES.map((bundle) => (
                 <PricingBundleCard key={bundle.id} bundle={bundle} />
               ))}

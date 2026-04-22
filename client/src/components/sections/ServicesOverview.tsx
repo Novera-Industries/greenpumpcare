@@ -35,8 +35,13 @@ export function ServicesOverview() {
           ))}
         </StaggerContainer>
 
-        {/* Mobile: forward marquee */}
-        <MobileMarquee speed={46} className="mb-6" itemClassName="w-[280px] shrink-0 flex">
+        {/* Mobile: forward marquee (pause + swipe on touch) */}
+        <MobileMarquee
+          speed={46}
+          pauseOnTouch
+          className="mb-6"
+          itemClassName="w-[280px] shrink-0 flex"
+        >
           {SERVICES.map((service) => (
             <ServiceCard key={service.id} service={service} />
           ))}
@@ -57,8 +62,15 @@ export function ServicesOverview() {
           ))}
         </StaggerContainer>
 
-        {/* Mobile/tablet: reverse marquee (below lg) */}
-        <MobileMarquee reverse speed={50} hideAt="lg" itemClassName="w-[300px] shrink-0 flex">
+        {/* Mobile/tablet: reverse marquee (below lg) — dark cards, no edge fade, pause + swipe on touch */}
+        <MobileMarquee
+          reverse
+          speed={50}
+          hideAt="lg"
+          noFade
+          pauseOnTouch
+          itemClassName="w-[300px] shrink-0 flex"
+        >
           {BUNDLES.map((bundle) => (
             <BundleCard key={bundle.id} bundle={bundle} />
           ))}
