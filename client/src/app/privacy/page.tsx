@@ -275,7 +275,7 @@ export default function PrivacyPage() {
             Your information, including Personal Data, is processed at the
             Company&apos;s operating offices and in any other places where the
             parties involved in the processing are located. This means that
-            this information may be transferred to — and maintained on —
+            this information may be transferred to, and maintained on,
             computers located outside of your state, province, country, or
             other governmental jurisdiction where the data protection laws may
             differ from those of your jurisdiction.
@@ -616,7 +616,7 @@ function DefItem({
 }) {
   return (
     <li className="text-gray-700">
-      <strong className="text-text">{term}</strong> — {children}
+      <strong className="text-text">{term}:</strong> {children}
     </li>
   );
 }

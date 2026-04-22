@@ -150,18 +150,18 @@ export function PriceCalculator() {
   return (
     <AnimatedSection id="pricing" className="section bg-bg-light scroll-mt-24">
       <div className="container">
-        <div className="text-center mb-10">
-          <h2 className="font-heading text-4xl sm:text-5xl font-semibold text-text mb-4 tracking-[-0.035em]">
+        <div className="text-center mb-8 sm:mb-10">
+          <h2 className="font-heading text-3xl sm:text-4xl lg:text-5xl font-semibold text-text mb-3 sm:mb-4 tracking-[-0.035em]">
             Build your plan.
           </h2>
-          <p className="text-gray-600 text-lg max-w-lg mx-auto">
+          <p className="text-gray-600 text-base sm:text-lg max-w-lg mx-auto">
             Select your system, heads, and tier. See your exact monthly price and how much you save vs. booking one-time.
           </p>
         </div>
 
         <div className="max-w-3xl mx-auto bg-white rounded-card shadow-card overflow-hidden">
           {/* Mode toggle: Care plan vs One-time */}
-          <div className="p-8 border-b border-gray-100">
+          <div className="p-5 sm:p-8 border-b border-gray-100">
             <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
               Step 1. Pricing option
             </p>
@@ -169,7 +169,7 @@ export function PriceCalculator() {
               <button
                 onClick={() => setMode("plan")}
                 className={cn(
-                  "relative rounded-xl border-2 p-4 text-left transition-all duration-200 cursor-pointer",
+                  "relative rounded-xl border-2 p-3 sm:p-4 text-left transition-all duration-200 cursor-pointer",
                   mode === "plan"
                     ? "border-primary bg-stripe ring-2 ring-primary"
                     : "border-gray-200 bg-white hover:border-gray-300"
@@ -190,7 +190,7 @@ export function PriceCalculator() {
               <button
                 onClick={() => setMode("onetime")}
                 className={cn(
-                  "relative rounded-xl border-2 p-4 text-left transition-all duration-200 cursor-pointer",
+                  "relative rounded-xl border-2 p-3 sm:p-4 text-left transition-all duration-200 cursor-pointer",
                   mode === "onetime"
                     ? "border-primary bg-stripe ring-2 ring-primary"
                     : "border-gray-200 bg-white hover:border-gray-300"
@@ -213,17 +213,17 @@ export function PriceCalculator() {
 
           {/* Step 2. Tier — only shown for plan mode */}
           {mode === "plan" && (
-          <div className="p-8 border-b border-gray-100">
+          <div className="p-5 sm:p-8 border-b border-gray-100">
             <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
               Step 2. Choose your tier
             </p>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
               {TIERS.map(({ tier: t, badge }) => (
                 <button
                   key={t}
                   onClick={() => setTier(t)}
                   className={cn(
-                    "relative rounded-xl border-2 p-4 text-left transition-all duration-200 cursor-pointer",
+                    "relative rounded-xl border-2 p-3 sm:p-4 text-center sm:text-left transition-all duration-200 cursor-pointer",
                     tier === t
                       ? t === "Comfort"
                         ? "border-primary bg-[#1a1a1a] ring-2 ring-primary"
@@ -237,7 +237,7 @@ export function PriceCalculator() {
                   {badge && (
                     <span
                       className={cn(
-                        "absolute -top-2.5 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wide whitespace-nowrap",
+                        "absolute -top-2 sm:-top-2.5 left-1/2 -translate-x-1/2 px-1.5 sm:px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wide whitespace-nowrap",
                         t === "Comfort"
                           ? "bg-primary text-white"
                           : "bg-leaf text-white"
@@ -250,7 +250,7 @@ export function PriceCalculator() {
                   {tier === t && (
                     <span
                       className={cn(
-                        "absolute top-2 right-2 w-4 h-4 rounded-full flex items-center justify-center",
+                        "absolute top-1.5 right-1.5 sm:top-2 sm:right-2 w-4 h-4 rounded-full flex items-center justify-center",
                         t === "Comfort" ? "bg-mint" : "bg-primary"
                       )}
                     >
@@ -267,15 +267,20 @@ export function PriceCalculator() {
                   </p>
                   <p
                     className={cn(
-                      "text-xs mt-0.5",
+                      "text-[11px] sm:text-xs mt-0.5 leading-tight",
                       tier === t && t === "Comfort" ? "text-white/60" : "text-gray-400"
                     )}
                   >
-                    {t === "Essential"
-                      ? "10% service discount"
-                      : t === "Comfort"
-                      ? "15% service discount"
-                      : "20% service discount"}
+                    <span className="sm:hidden">
+                      {t === "Essential" ? "10% off" : t === "Comfort" ? "15% off" : "20% off"}
+                    </span>
+                    <span className="hidden sm:inline">
+                      {t === "Essential"
+                        ? "10% service discount"
+                        : t === "Comfort"
+                        ? "15% service discount"
+                        : "20% service discount"}
+                    </span>
                   </p>
                 </button>
               ))}
@@ -284,7 +289,7 @@ export function PriceCalculator() {
           )}
 
           {/* Systems step — renumber based on mode */}
-          <div className="p-8 border-b border-gray-100">
+          <div className="p-5 sm:p-8 border-b border-gray-100">
             <p className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-4">
               Step {mode === "plan" ? "3" : "2"}. Select your system(s)
             </p>
@@ -296,7 +301,7 @@ export function PriceCalculator() {
                   systems.has("ductless") ? "border-primary bg-stripe" : "border-gray-200 bg-white"
                 )}
               >
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <button
                     onClick={() => toggleSystem("ductless")}
                     className="flex items-center gap-3 cursor-pointer"
@@ -337,7 +342,7 @@ export function PriceCalculator() {
                   </button>
 
                   {systems.has("ductless") && (
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center justify-center sm:justify-end gap-3 pl-8 sm:pl-0">
                       <span className="text-xs text-gray-500 font-medium">Heads:</span>
                       <div className="flex items-center gap-2">
                         <button
@@ -422,7 +427,7 @@ export function PriceCalculator() {
           </div>
 
           {/* Result */}
-          <div className="p-8 bg-gradient-to-br from-bg-light to-white">
+          <div className="p-5 sm:p-8 bg-gradient-to-br from-bg-light to-white">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
               <div className="flex-1">
                 {mode === "plan" ? (
@@ -431,7 +436,7 @@ export function PriceCalculator() {
                       Your monthly total
                     </p>
                     <div className="flex items-end gap-1 mb-3">
-                      <span className="font-heading text-5xl font-bold text-primary">
+                      <span className="font-heading text-4xl sm:text-5xl font-bold text-primary">
                         $<AnimatedPrice value={monthlyTotal} />
                       </span>
                       <span className="text-gray-500 mb-1.5">/mo</span>
@@ -512,7 +517,7 @@ export function PriceCalculator() {
                       One-time service total
                     </p>
                     <div className="flex items-end gap-1 mb-3">
-                      <span className="font-heading text-5xl font-bold text-primary">
+                      <span className="font-heading text-4xl sm:text-5xl font-bold text-primary">
                         $<AnimatedPrice value={oneTimePerVisitTotal} />
                       </span>
                       <span className="text-gray-500 mb-1.5">one-time</span>
@@ -563,8 +568,8 @@ export function PriceCalculator() {
                 )}
               </div>
 
-              <div className="flex flex-col gap-2 shrink-0">
-                <Button onClick={openBookingModal} variant="primary">
+              <div className="flex flex-col gap-2 shrink-0 w-full sm:w-auto">
+                <Button onClick={openBookingModal} variant="primary" className="w-full sm:w-auto">
                   {mode === "plan" ? "Get started" : "Book service"}
                 </Button>
                 <p className="text-xs text-gray-400 text-center">

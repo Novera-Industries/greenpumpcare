@@ -142,7 +142,7 @@ export function BookingModal() {
 
     if (systems.has("ductless")) {
       services.push({
-        name: `Ductless mini-split deep clean — ${ductlessHeads} head${ductlessHeads > 1 ? "s" : ""}`,
+        name: `Ductless mini-split deep clean, ${ductlessHeads} head${ductlessHeads > 1 ? "s" : ""}`,
         description: "Complete disassembly, coil wash, antimicrobial treatment.",
         priceCents: ductlessPrice * 100,
         quantity: 1,
@@ -439,7 +439,7 @@ export function BookingModal() {
                               You&apos;re saving ${bundleSavings} with a bundle!
                             </p>
                             <p className="text-xs text-gray-600 mt-0.5">
-                              {bundleName} — discount applied automatically below.
+                              {bundleName}. Discount applied automatically below.
                             </p>
                           </div>
                         </div>
@@ -638,7 +638,7 @@ export function BookingModal() {
                   <Field label="Notes (Optional)">
                     <textarea
                       rows={3}
-                      placeholder="Anything we should know — preferred time, access instructions…"
+                      placeholder="Anything we should know: preferred time, access instructions…"
                       value={form.notes}
                       onChange={(e) => update("notes", e.target.value)}
                       className={`${inputClass} resize-none`}

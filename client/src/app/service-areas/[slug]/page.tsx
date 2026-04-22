@@ -244,7 +244,7 @@ export default async function ServiceAreaPage({ params }: PageProps) {
             <figure className="my-16">
               <blockquote className="font-heading text-2xl sm:text-3xl font-semibold text-text leading-snug tracking-tight">
                 A dirty heat pump can quietly cost you{" "}
-                <span className="text-primary">10–25%</span> more on your energy bill.
+                <span className="text-primary">10 to 25%</span> more on your energy bill.
               </blockquote>
               <figcaption className="mt-4 text-sm text-gray-500">
                 Manufacturer efficiency guidance

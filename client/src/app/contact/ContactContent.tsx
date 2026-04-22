@@ -14,7 +14,7 @@ const contactCards = [
     title: "Phone",
     value: COMPANY.phone,
     href: COMPANY.phoneHref,
-    description: "Mon–Fri 8am–8pm, Sat 10am–5pm",
+    description: "Mon to Fri 8am to 8pm, Sat 10am to 5pm",
   },
   {
     icon: Mail,
@@ -49,7 +49,7 @@ export function ContactContent() {
           <>
             Send us a message, ask a question, or request a free estimate.
             <br />
-            Mon–Fri 8–8, Sat 10–5.
+            Mon to Fri 8 to 8, Sat 10 to 5.
           </>
         }
         badges={[
@@ -79,7 +79,7 @@ export function ContactContent() {
             {contactCards.map((card) => (
               <div
                 key={card.title}
-                className="bg-white rounded-card shadow-card p-5 flex items-start gap-3"
+                className="bg-white rounded-card shadow-card p-5 flex flex-col items-center text-center sm:flex-row sm:items-start sm:text-left gap-3"
               >
                 <div className="w-10 h-10 bg-stripe rounded-full flex items-center justify-center shrink-0">
                   <card.icon className="w-5 h-5 text-primary" />

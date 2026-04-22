@@ -66,7 +66,7 @@ export function ServicePageContent({
             }
           >
             {/* Left: copy */}
-            <div>
+            <div className="text-center lg:text-left">
               {badge ? (
                 <motion.div
                   variants={fadeInUp}
@@ -100,7 +100,7 @@ export function ServicePageContent({
                 initial="hidden"
                 animate="visible"
                 transition={{ delay: 0.15 }}
-                className="text-gray-600 text-lg leading-relaxed mb-8 max-w-xl"
+                className="text-gray-600 text-lg leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0"
               >
                 {service.description}
               </motion.p>
@@ -109,7 +109,7 @@ export function ServicePageContent({
                 initial="hidden"
                 animate="visible"
                 transition={{ delay: 0.2 }}
-                className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-8"
+                className="flex flex-wrap justify-center lg:justify-start items-center gap-x-6 gap-y-3 mb-8"
               >
                 <span className="font-heading text-4xl font-bold text-primary tabular-nums">
                   {formatPrice(service.price)}
@@ -128,7 +128,7 @@ export function ServicePageContent({
                 initial="hidden"
                 animate="visible"
                 transition={{ delay: 0.25 }}
-                className="flex flex-wrap gap-3"
+                className="flex flex-wrap justify-center lg:justify-start gap-3"
               >
                 <Button onClick={openBookingModal} size="lg">
                   Book this service
@@ -136,7 +136,8 @@ export function ServicePageContent({
                 </Button>
                 <Button href={COMPANY.phoneHref} variant="secondary" size="lg">
                   <Phone className="w-5 h-5" />
-                  {COMPANY.phone}
+                  <span className="md:hidden">Call now</span>
+                  <span className="hidden md:inline">{COMPANY.phone}</span>
                 </Button>
               </motion.div>
             </div>

@@ -23,8 +23,8 @@ export function WhyChooseUs() {
         <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {DIFFERENTIATORS.map((item) => (
             <StaggerItem key={item.title}>
-              <div className="bg-white rounded-card p-6 shadow-card">
-                {(() => { const Icon = getIcon(item.icon); return <Icon className="w-8 h-8 text-primary mb-3" />; })()}
+              <div className="bg-white rounded-card p-6 shadow-card text-center md:text-left">
+                {(() => { const Icon = getIcon(item.icon); return <Icon className="w-8 h-8 text-primary mb-3 mx-auto md:mx-0" />; })()}
                 <h3 className="font-heading text-lg font-semibold text-text mb-2">
                   {item.title}
                 </h3>

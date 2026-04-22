@@ -20,6 +20,7 @@ import {
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { StaggerContainer } from "@/components/ui/StaggerContainer";
 import { StaggerItem } from "@/components/ui/StaggerItem";
+import { MobileMarquee } from "@/components/ui/MobileMarquee";
 import { BookingCTA } from "@/components/sections/BookingCTA";
 import { PageHero } from "@/components/layout/PageHero";
 import { COMPANY, TESTIMONIALS } from "@/lib/constants";
@@ -79,7 +80,7 @@ const craftPrinciples = [
   "Every coil photographed before and after.",
   "Every clean followed by a written report.",
   "Every technician trained on every major brand.",
-  "Every customer followed up — not ghosted.",
+  "Every customer followed up, not ghosted.",
 ];
 
 const AVATAR_COLORS = [
@@ -104,11 +105,46 @@ function TestimonialCard({
   text,
   name,
   index,
+  animate = true,
 }: {
   text: string;
   name: string;
   index: number;
+  animate?: boolean;
 }) {
+  if (!animate) {
+    return (
+      <figure className="relative bg-white rounded-[20px] border border-gray-100 p-7 shadow-card h-full flex flex-col">
+        <Quote
+          className="absolute top-5 right-5 w-6 h-6 text-primary/15"
+          fill="currentColor"
+        />
+        <div className="flex items-center gap-0.5 mb-4">
+          {[...Array(5)].map((_, i) => (
+            <Star key={i} className="w-4 h-4" fill="#FBBF24" stroke="#FBBF24" />
+          ))}
+        </div>
+        <blockquote className="text-text text-[15px] leading-relaxed mb-5 font-medium italic flex-1">
+          &ldquo;{text}&rdquo;
+        </blockquote>
+        <figcaption className="flex items-center gap-3 pt-4 border-t border-gray-100 mt-auto">
+          <div
+            className={`w-9 h-9 rounded-full flex items-center justify-center text-white font-heading font-bold text-xs ${
+              AVATAR_COLORS[index % AVATAR_COLORS.length]
+            }`}
+          >
+            {getInitials(name)}
+          </div>
+          <div>
+            <p className="font-heading font-semibold text-text text-sm">
+              {name}
+            </p>
+            <p className="text-gray-500 text-xs">Google Review · Halifax</p>
+          </div>
+        </figcaption>
+      </figure>
+    );
+  }
   return (
     <motion.figure
       initial={{ opacity: 0, y: 20 }}
@@ -183,7 +219,8 @@ export function AboutContent() {
             </p>
           </div>
 
-          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {/* Desktop: stagger grid */}
+          <StaggerContainer className="hidden md:grid grid-cols-3 gap-5">
             {promisePillars.map((p) => (
               <StaggerItem key={p.title}>
                 <div className="h-full bg-white border border-gray-100 rounded-[20px] p-7 hover:border-primary/30 hover:shadow-card transition-all">
@@ -200,6 +237,26 @@ export function AboutContent() {
               </StaggerItem>
             ))}
           </StaggerContainer>
+
+          {/* Mobile: forward marquee */}
+          <MobileMarquee speed={42}>
+            {promisePillars.map((p) => (
+              <div
+                key={p.title}
+                className="h-full bg-white border border-gray-100 rounded-[20px] p-6 text-center"
+              >
+                <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center mb-4 mx-auto">
+                  <p.icon className="w-5 h-5 text-primary" strokeWidth={2} />
+                </div>
+                <h3 className="font-heading text-xl font-semibold text-text mb-2">
+                  {p.title}
+                </h3>
+                <p className="text-gray-600 text-[15px] leading-relaxed">
+                  {p.body}
+                </p>
+              </div>
+            ))}
+          </MobileMarquee>
         </div>
       </AnimatedSection>
 
@@ -235,7 +292,8 @@ export function AboutContent() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {/* Desktop: grid */}
+          <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-5">
             {TESTIMONIALS.slice(0, 6).map((t, i) => (
               <TestimonialCard
                 key={t.name}
@@ -245,6 +303,19 @@ export function AboutContent() {
               />
             ))}
           </div>
+
+          {/* Mobile: forward marquee */}
+          <MobileMarquee speed={60} itemClassName="w-[300px] shrink-0 flex">
+            {TESTIMONIALS.slice(0, 6).map((t, i) => (
+              <TestimonialCard
+                key={t.name}
+                text={t.text}
+                name={t.name}
+                index={i}
+                animate={false}
+              />
+            ))}
+          </MobileMarquee>
 
           <div className="mt-10 text-center">
             <a
@@ -264,7 +335,7 @@ export function AboutContent() {
       <AnimatedSection className="section">
         <div className="container max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-14 items-stretch">
-            <div>
+            <div className="text-center lg:text-left">
               <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary mb-4">
                 The craft
               </p>
@@ -288,7 +359,7 @@ export function AboutContent() {
                 <p>
                   When a customer on Kempt Road calls us back a year later to
                   say the system is still running quieter than it did after
-                  installation — that's the win.
+                  installation. That's the win.
                 </p>
               </div>
             </div>
@@ -329,7 +400,8 @@ export function AboutContent() {
             </h2>
           </div>
 
-          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Desktop: stagger grid */}
+          <StaggerContainer className="hidden md:grid grid-cols-2 gap-4">
             {values.map((v) => (
               <StaggerItem key={v.title}>
                 <div className="flex items-start gap-4 bg-white border border-gray-100 rounded-[18px] p-6 h-full hover:border-primary/30 transition-colors">
@@ -348,6 +420,26 @@ export function AboutContent() {
               </StaggerItem>
             ))}
           </StaggerContainer>
+
+          {/* Mobile: reverse marquee */}
+          <MobileMarquee reverse speed={44}>
+            {values.map((v) => (
+              <div
+                key={v.title}
+                className="h-full bg-white border border-gray-100 rounded-[18px] p-6 text-center"
+              >
+                <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center mb-4 mx-auto">
+                  <v.icon className="w-5 h-5 text-primary" strokeWidth={2} />
+                </div>
+                <h3 className="font-heading text-lg font-semibold text-text mb-1.5">
+                  {v.title}
+                </h3>
+                <p className="text-gray-600 text-[15px] leading-relaxed">
+                  {v.body}
+                </p>
+              </div>
+            ))}
+          </MobileMarquee>
         </div>
       </AnimatedSection>
 
@@ -442,47 +534,47 @@ export function AboutContent() {
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white rounded-[18px] border border-gray-100 p-6 text-center">
+            <div className="bg-white rounded-[18px] border border-gray-100 p-4 sm:p-6 text-center">
               <Shield
                 className="w-9 h-9 text-primary mx-auto mb-3"
                 strokeWidth={1.5}
               />
-              <p className="font-heading font-bold text-2xl text-text">
+              <p className="font-heading font-bold text-base sm:text-2xl text-text">
                 Guaranteed
               </p>
               <p className="text-gray-500 text-xs mt-1">100% Satisfaction</p>
             </div>
-            <div className="bg-white rounded-[18px] border border-gray-100 p-6 text-center">
+            <div className="bg-white rounded-[18px] border border-gray-100 p-4 sm:p-6 text-center">
               <Star
                 className="w-9 h-9 text-star mx-auto mb-3"
                 fill="#FBBF24"
                 strokeWidth={1.5}
               />
-              <p className="font-heading font-bold text-2xl text-text">
+              <p className="font-heading font-bold text-base sm:text-2xl text-text">
                 {COMPANY.googleRating.toFixed(1)} / 5.0
               </p>
               <p className="text-gray-500 text-xs mt-1">
                 {COMPANY.googleReviewCount} Google reviews
               </p>
             </div>
-            <div className="bg-white rounded-[18px] border border-gray-100 p-6 text-center">
+            <div className="bg-white rounded-[18px] border border-gray-100 p-4 sm:p-6 text-center">
               <Award
                 className="w-9 h-9 text-primary mx-auto mb-3"
                 strokeWidth={1.5}
               />
-              <p className="font-heading font-bold text-2xl text-text">
+              <p className="font-heading font-bold text-base sm:text-2xl text-text">
                 Licensed
               </p>
               <p className="text-gray-500 text-xs mt-1">
                 &amp; fully insured
               </p>
             </div>
-            <div className="bg-white rounded-[18px] border border-gray-100 p-6 text-center">
+            <div className="bg-white rounded-[18px] border border-gray-100 p-4 sm:p-6 text-center">
               <Leaf
                 className="w-9 h-9 text-leaf mx-auto mb-3"
                 strokeWidth={1.5}
               />
-              <p className="font-heading font-bold text-2xl text-text">
+              <p className="font-heading font-bold text-base sm:text-2xl text-text">
                 Eco-certified
               </p>
               <p className="text-gray-500 text-xs mt-1">
@@ -528,11 +620,18 @@ export function AboutContent() {
             <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-500 text-center mb-6">
               Guides
             </p>
-            <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {/* Desktop: stagger grid */}
+            <StaggerContainer className="hidden md:grid grid-cols-2 gap-5">
               {GUIDES.map((doc) => (
                 <DocCard key={doc.file} doc={doc} />
               ))}
             </StaggerContainer>
+            {/* Mobile: forward marquee */}
+            <MobileMarquee speed={48} itemClassName="w-[300px] shrink-0 flex">
+              {GUIDES.map((doc) => (
+                <DocCardInner key={doc.file} doc={doc} />
+              ))}
+            </MobileMarquee>
           </div>
 
           {/* Brochures */}
@@ -540,11 +639,18 @@ export function AboutContent() {
             <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-gray-500 text-center mb-6">
               Brochures
             </p>
-            <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {/* Desktop: stagger grid */}
+            <StaggerContainer className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-4">
               {BROCHURES.map((doc) => (
                 <DocCard key={doc.file} doc={doc} compact />
               ))}
             </StaggerContainer>
+            {/* Mobile: reverse marquee */}
+            <MobileMarquee reverse speed={52} itemClassName="w-[280px] shrink-0 flex">
+              {BROCHURES.map((doc) => (
+                <DocCardInner key={doc.file} doc={doc} compact />
+              ))}
+            </MobileMarquee>
           </div>
         </div>
       </AnimatedSection>
@@ -561,39 +667,59 @@ interface DocumentEntry {
   size: string;
 }
 
+function DocCardInner({
+  doc,
+  compact = false,
+}: {
+  doc: DocumentEntry;
+  compact?: boolean;
+}) {
+  return (
+    <a
+      href={doc.file}
+      download
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group block h-full bg-white border border-gray-100 rounded-[20px] p-6 hover:border-primary/30 hover:shadow-card transition-all"
+    >
+      <div className="flex flex-col items-center text-center md:flex-row md:items-start md:text-left gap-4">
+        <div className="w-11 h-11 rounded-[12px] bg-primary/10 flex items-center justify-center shrink-0">
+          <FileText className="w-5 h-5 text-primary" strokeWidth={2} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3
+            className={`font-heading font-semibold text-text mb-1.5 ${
+              compact ? "text-base" : "text-xl"
+            }`}
+          >
+            {doc.title}
+          </h3>
+          <p
+            className={`text-gray-600 leading-relaxed mb-4 ${
+              compact ? "text-sm" : "text-[15px]"
+            }`}
+          >
+            {doc.description}
+          </p>
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-400">
+              PDF · {doc.size}
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-primary font-semibold text-sm group-hover:gap-2 transition-all">
+              <Download className="w-4 h-4" />
+              Download
+            </span>
+          </div>
+        </div>
+      </div>
+    </a>
+  );
+}
+
 function DocCard({ doc, compact = false }: { doc: DocumentEntry; compact?: boolean }) {
   return (
     <StaggerItem>
-      <a
-        href={doc.file}
-        download
-        target="_blank"
-        rel="noopener noreferrer"
-        className="group block h-full bg-white border border-gray-100 rounded-[20px] p-6 hover:border-primary/30 hover:shadow-card transition-all"
-      >
-        <div className="flex items-start gap-4">
-          <div className="w-11 h-11 rounded-[12px] bg-primary/10 flex items-center justify-center shrink-0">
-            <FileText className="w-5 h-5 text-primary" strokeWidth={2} />
-          </div>
-          <div className="flex-1 min-w-0">
-            <h3 className={`font-heading font-semibold text-text mb-1.5 ${compact ? "text-base" : "text-xl"}`}>
-              {doc.title}
-            </h3>
-            <p className={`text-gray-600 leading-relaxed mb-4 ${compact ? "text-sm" : "text-[15px]"}`}>
-              {doc.description}
-            </p>
-            <div className="flex items-center justify-between">
-              <span className="text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-400">
-                PDF · {doc.size}
-              </span>
-              <span className="inline-flex items-center gap-1.5 text-primary font-semibold text-sm group-hover:gap-2 transition-all">
-                <Download className="w-4 h-4" />
-                Download
-              </span>
-            </div>
-          </div>
-        </div>
-      </a>
+      <DocCardInner doc={doc} compact={compact} />
     </StaggerItem>
   );
 }

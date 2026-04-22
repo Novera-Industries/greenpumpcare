@@ -49,9 +49,9 @@ const liveActivity = [
     time: "18 mins ago",
   },
   {
-    name: "Jennifer R.",
+    name: "Lisa K.",
     location: "Bedford",
-    action: "booked an HRV clean",
+    action: "booked a clean",
     time: "1 hour ago",
   },
   {
@@ -416,7 +416,8 @@ export function Hero() {
             </Button>
             <Button href={COMPANY.phoneHref} variant="secondary" size="lg">
               <Phone className="w-5 h-5" />
-              {COMPANY.phone}
+              <span className="md:hidden">Call now</span>
+              <span className="hidden md:inline">{COMPANY.phone}</span>
             </Button>
           </motion.div>
 

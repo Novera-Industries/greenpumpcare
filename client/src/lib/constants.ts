@@ -22,8 +22,8 @@ export const COMPANY = {
   },
   license: "#4615849",
   hours: {
-    weekdays: "Mon – Fri: 8 am – 8 pm",
-    saturday: "Sat: 10 am – 5 pm",
+    weekdays: "Mon to Fri, 8 am to 8 pm",
+    saturday: "Sat, 10 am to 5 pm",
     sunday: "Sun: Closed",
   },
   googleRating: 5.0,
@@ -79,7 +79,7 @@ export interface Service {
 export const SERVICES: Service[] = [
   {
     id: "ductless",
-    name: "Ductless mini-split deep clean",
+    name: "Ductless Mini-Split Deep Clean",
     slug: "/ductless-mini-split-cleaning",
     price: 199,
     description:
@@ -101,14 +101,14 @@ export const SERVICES: Service[] = [
   },
   {
     id: "ducted",
-    name: "Ducted system deep clean",
+    name: "Ducted System Deep Clean",
     slug: "/ducted-system-cleaning",
     price: 349,
     description:
       "Comprehensive ducted system service with full coil and component cleaning. Covers your entire ducted heat pump system from intake to output.",
     shortDescription:
       "Full ducted system service with complete coil and component cleaning.",
-    duration: "2–3 Hours",
+    duration: "2 to 3 Hours",
     features: [
       "Evaporator coil deep clean",
       "Blower assembly cleaning",
@@ -124,14 +124,14 @@ export const SERVICES: Service[] = [
   },
   {
     id: "hrv",
-    name: "HRV/ERV cleaning",
+    name: "HRV/ERV Cleaning",
     slug: "/hrv-erv-cleaning",
     price: 129,
     description:
       "The only premium HRV/ERV cleaning service in Halifax. Core, filters, and ductwork. Keeping your ventilation system running efficiently and your indoor air fresh.",
     shortDescription:
       "Core, filters, and ductwork. The only premium HRV service in Halifax.",
-    duration: "0.5–1 Hours",
+    duration: "30 to 60 Minutes",
     features: [
       "Heat exchange core removal and deep cleaning",
       "Filter assessment and replacement recommendation",
@@ -157,7 +157,7 @@ export interface BundleOffer {
 export const BUNDLES: BundleOffer[] = [
   {
     id: "mini-hrv",
-    name: "Mini-split + HRV",
+    name: "Mini-Split + HRV",
     price: 299,
     savings: 29,
     description:
@@ -177,7 +177,7 @@ export const BUNDLES: BundleOffer[] = [
   },
   {
     id: "ducted-plus-head",
-    name: "Ducted + 1 ductless head",
+    name: "Ducted + 1 Ductless Head",
     price: 499,
     savings: 49,
     description:
@@ -331,7 +331,7 @@ export const DIFFERENTIATORS: Differentiator[] = [
   {
     title: "Extended Hours",
     description:
-      "Mon–Fri 8 am – 8 pm, Sat 10 am – 5 pm. We work around your schedule.",
+      "Mon to Fri, 8 am to 8 pm. Sat, 10 am to 5 pm. We work around your schedule.",
     icon: "CalendarClock",
   },
   {
@@ -445,7 +445,7 @@ export const GENERAL_FAQ: FAQItem[] = [
     category: "cleanings",
     question: "How long does a cleaning take?",
     answer:
-      "A ductless mini-split deep clean takes 1+ hour per indoor head. Ducted systems take 2–3 hours. HRV/ERV cleaning takes 0.5–1 hours. We never rush. Thoroughness is our priority.",
+      "A ductless mini-split deep clean takes 1+ hour per indoor head. Ducted systems take 2 to 3 hours. HRV/ERV cleaning takes 30 to 60 minutes. We never rush. Thoroughness is our priority.",
   },
   {
     category: "cleanings",
@@ -517,7 +517,7 @@ export const GENERAL_FAQ: FAQItem[] = [
     category: "maintenance",
     question: "How often does my heat pump need cleaning?",
     answer:
-      "Ductless mini-splits: 1–2 deep cleans per year (spring and fall); 4 per year for high-use homes or those with pets and allergies. HRV/ERV units: 1–2 per year. Ducted systems: 1–2 per year, plus filter replacement every 1–3 months. Regular maintenance keeps your warranty valid and efficiency high.",
+      "Ductless mini-splits: 1 to 2 deep cleans per year (spring and fall), or 4 per year for high-use homes or those with pets and allergies. HRV/ERV units: 1 to 2 per year. Ducted systems: 1 to 2 per year, plus filter replacement every 1 to 3 months. Regular maintenance keeps your warranty valid and efficiency high.",
   },
   {
     category: "maintenance",
@@ -529,7 +529,7 @@ export const GENERAL_FAQ: FAQItem[] = [
     category: "maintenance",
     question: "How often should I rinse or replace my filters?",
     answer:
-      "Rinse ductless filters monthly. Ducted system filters should be replaced every 1–3 months (included in Ducted Care Plans). HRV/ERV filters should be checked every 2–3 months and replaced as needed.",
+      "Rinse ductless filters monthly. Ducted system filters should be replaced every 1 to 3 months (included in Ducted Care Plans). HRV/ERV filters should be checked every 2 to 3 months and replaced as needed.",
   },
   {
     category: "repairs",
@@ -571,6 +571,6 @@ export const GENERAL_FAQ: FAQItem[] = [
     category: "repairs",
     question: "Should I repair my heat pump or replace it?",
     answer:
-      "Generally repair if the system is under 10 years old, the repair cost is under 50% of replacement, and it's the first major issue. Consider replacement if the system is 12–15+ years old, repair costs exceed 50% of replacement, it uses older R-22 refrigerant, or you're seeing frequent breakdowns. We'll give you an honest recommendation after the diagnostic.",
+      "Generally repair if the system is under 10 years old, the repair cost is under 50% of replacement, and it's the first major issue. Consider replacement if the system is 12 to 15+ years old, repair costs exceed 50% of replacement, it uses older R-22 refrigerant, or you're seeing frequent breakdowns. We'll give you an honest recommendation after the diagnostic.",
   },
 ];

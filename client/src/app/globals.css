@@ -309,18 +309,48 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
+/*  Mobile marquee (auto-scrolling carousel)                           */
+/* ------------------------------------------------------------------ */
+
+@keyframes mobile-marquee-forward {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes mobile-marquee-reverse {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+.mobile-marquee {
+  mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 24px, black calc(100% - 24px), transparent);
+}
+
+.mobile-marquee-forward {
+  animation: mobile-marquee-forward linear infinite;
+}
+
+.mobile-marquee-reverse {
+  animation: mobile-marquee-reverse linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-marquee-forward,
+  .mobile-marquee-reverse {
+    animation: none;
+  }
+}
+
+/* ------------------------------------------------------------------ */
 /*  Housecall Pro chat container — keep inside viewport on small       */
 /*  screens so the close X isn't cut off                               */
 /* ------------------------------------------------------------------ */
 
-@media (max-width: 480px) {
-  #proChatIframeContainer {
-    width: calc(100vw - 16px) !important;
-    max-width: 400px !important;
-    right: 8px !important;
-    height: calc(100dvh - 16px) !important;
-    max-height: 640px !important;
-    bottom: 8px !important;
+@media (max-width: 767px) {
+  #proChatIframeContainer,
+  #proChatIframe {
+    display: none !important;
   }
 }
 

@@ -6,25 +6,26 @@ import { CalendarCheck, Sparkles, Wind } from "lucide-react";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { StaggerContainer } from "@/components/ui/StaggerContainer";
 import { StaggerItem } from "@/components/ui/StaggerItem";
+import { MobileMarquee } from "@/components/ui/MobileMarquee";
 
 const steps = [
   {
     icon: CalendarCheck,
-    title: "Book online",
+    title: "Book Online",
     description:
       "Pick a time that works for your week. Evenings and Saturdays are open. No phone tag, promise.",
     color: "from-primary to-primary-dark",
   },
   {
     icon: Sparkles,
-    title: "We deep clean",
+    title: "We Deep Clean",
     description:
       "We take the unit apart, wash the coils, treat for mould, and put it all back. Over an hour per head. We don't cut corners.",
     color: "from-mint to-primary",
   },
   {
     icon: Wind,
-    title: "Breathe easy",
+    title: "Breathe Easy",
     description:
       "You'll get before/after photos on your phone. Your system runs smoother, your air feels fresher, and your warranty stays good.",
     color: "from-leaf to-mint",
@@ -76,32 +77,53 @@ export function ProcessTimeline() {
           </div>
         </div>
 
-        <StaggerContainer className="grid grid-cols-1 lg:grid-cols-3 gap-6 max-w-4xl mx-auto items-stretch">
+        {/* Desktop: stagger grid */}
+        <StaggerContainer className="hidden lg:grid grid-cols-3 gap-6 max-w-4xl mx-auto items-stretch">
           {steps.map((step, i) => (
             <StaggerItem key={i} className="h-full">
-              <div className="card-premium relative bg-white rounded-card p-6 shadow-card overflow-hidden text-center h-full flex flex-col">
-                <div className="card-glow absolute -top-8 -right-8 w-28 h-28 bg-primary/10 rounded-full blur-2xl" />
-
-                <div className={`card-icon-wrap relative z-10 w-14 h-14 bg-gradient-to-br ${step.color} rounded-card flex items-center justify-center mx-auto mb-4 shadow-float`}>
-                  <step.icon className="w-7 h-7 text-white" />
-                </div>
-
-                <p className="relative z-10 text-primary/40 font-heading text-xs font-bold mb-2">
-                  STEP {i + 1}
-                </p>
-                <h3 className="relative z-10 font-heading text-lg font-semibold text-text mb-2">
-                  {step.title}
-                </h3>
-                <p className="relative z-10 text-gray-600 text-sm">
-                  {step.description}
-                </p>
-
-                <div className="card-accent-line absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-mint" />
-              </div>
+              <StepCard step={step} index={i} />
             </StaggerItem>
           ))}
         </StaggerContainer>
+
+        {/* Mobile/tablet: forward marquee */}
+        <MobileMarquee
+          speed={46}
+          hideAt="lg"
+          itemClassName="w-[280px] shrink-0 flex"
+        >
+          {steps.map((step, i) => (
+            <StepCard key={i} step={step} index={i} />
+          ))}
+        </MobileMarquee>
       </div>
     </AnimatedSection>
+  );
+}
+
+function StepCard({
+  step,
+  index,
+}: {
+  step: (typeof steps)[number];
+  index: number;
+}) {
+  return (
+    <div className="card-premium relative bg-white rounded-card p-6 shadow-card overflow-hidden text-center h-full flex flex-col w-full">
+      <div className="card-glow absolute -top-8 -right-8 w-28 h-28 bg-primary/10 rounded-full blur-2xl" />
+      <div
+        className={`card-icon-wrap relative z-10 w-14 h-14 bg-gradient-to-br ${step.color} rounded-card flex items-center justify-center mx-auto mb-4 shadow-float`}
+      >
+        <step.icon className="w-7 h-7 text-white" />
+      </div>
+      <p className="relative z-10 text-primary/40 font-heading text-xs font-bold mb-2">
+        STEP {index + 1}
+      </p>
+      <h3 className="relative z-10 font-heading text-lg font-semibold text-text mb-2">
+        {step.title}
+      </h3>
+      <p className="relative z-10 text-gray-600 text-sm">{step.description}</p>
+      <div className="card-accent-line absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-mint" />
+    </div>
   );
 }

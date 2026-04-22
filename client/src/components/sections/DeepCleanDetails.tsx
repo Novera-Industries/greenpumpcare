@@ -2,6 +2,7 @@ import { Check } from "lucide-react";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
 import { StaggerContainer } from "@/components/ui/StaggerContainer";
 import { StaggerItem } from "@/components/ui/StaggerItem";
+import { MobileMarquee } from "@/components/ui/MobileMarquee";
 
 const SYSTEMS = [
   {
@@ -60,27 +61,44 @@ export function DeepCleanDetails() {
           </p>
         </div>
 
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Desktop: stagger grid */}
+        <StaggerContainer className="hidden md:grid grid-cols-3 gap-6">
           {SYSTEMS.map((system) => (
             <StaggerItem key={system.name}>
-              <div className="bg-white rounded-card shadow-card p-7 h-full flex flex-col">
-                <div className="text-3xl mb-3">{system.icon}</div>
-                <h3 className="font-heading text-lg font-semibold text-text mb-5">
-                  {system.name}
-                </h3>
-                <ul className="space-y-2.5 flex-1">
-                  {system.items.map((item) => (
-                    <li key={item} className="flex items-start gap-2.5 text-sm text-gray-700">
-                      <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              <SystemCard system={system} />
             </StaggerItem>
           ))}
         </StaggerContainer>
+
+        {/* Mobile: forward marquee */}
+        <MobileMarquee speed={56} itemClassName="w-[290px] shrink-0 flex">
+          {SYSTEMS.map((system) => (
+            <SystemCard key={system.name} system={system} />
+          ))}
+        </MobileMarquee>
       </div>
     </AnimatedSection>
+  );
+}
+
+function SystemCard({ system }: { system: (typeof SYSTEMS)[number] }) {
+  return (
+    <div className="bg-white rounded-card shadow-card p-7 h-full w-full flex flex-col text-center md:text-left">
+      <div className="text-3xl mb-3">{system.icon}</div>
+      <h3 className="font-heading text-lg font-semibold text-text mb-5">
+        {system.name}
+      </h3>
+      <ul className="space-y-2.5 flex-1">
+        {system.items.map((item) => (
+          <li
+            key={item}
+            className="flex items-start justify-center md:justify-start text-left gap-2.5 text-sm text-gray-700"
+          >
+            <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

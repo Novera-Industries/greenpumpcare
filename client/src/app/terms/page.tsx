@@ -81,22 +81,22 @@ export default function TermsPage() {
           <Bullets
             items={[
               <>
-                <strong>Heat pump cleaning</strong> — includes indoor
+                <strong>Heat pump cleaning:</strong> includes indoor
                 evaporator coil cleaning, filter cleaning or replacement, drain
                 pan treatment, and outdoor condenser coil rinse.
               </>,
               <>
-                <strong>Preventive maintenance</strong> — includes system
+                <strong>Preventive maintenance:</strong> includes system
                 inspection, refrigerant pressure check, electrical connection
                 inspection, and performance testing.
               </>,
               <>
-                <strong>Repairs</strong> — diagnosis and correction of faults,
+                <strong>Repairs:</strong> diagnosis and correction of faults,
                 including parts supply and labour, as specifically described
                 in the applicable Work Order.
               </>,
               <>
-                <strong>Care Plans</strong> — subscription-based recurring
+                <strong>Care Plans:</strong> subscription-based recurring
                 maintenance and priority service packages as described in
                 Section 8.
               </>,
@@ -203,8 +203,8 @@ export default function TermsPage() {
             .
           </p>
           <p className="mt-3">
-            <strong>Same-day cancellations</strong> — those received less than
-            24 hours before a scheduled appointment — may incur a cancellation
+            <strong>Same-day cancellations</strong> (those received less than
+            24 hours before a scheduled appointment) may incur a cancellation
             fee of up to $75.00 to recover the Company&apos;s dispatch costs.
             This fee will be communicated to the Customer at the time of
             cancellation and invoiced if applicable.
@@ -316,8 +316,8 @@ export default function TermsPage() {
           <div className="bg-stripe border-l-4 border-primary rounded-r-card p-4 my-4">
             <p className="text-text">
               To the maximum extent permitted by applicable law, the
-              Company&apos;s total liability to the Customer — whether in
-              contract, tort, or otherwise — shall not exceed the total amount
+              Company&apos;s total liability to the Customer (whether in
+              contract, tort, or otherwise) shall not exceed the total amount
               paid by the Customer for the specific service that gave rise to
               the claim.
             </p>
@@ -410,7 +410,7 @@ export default function TermsPage() {
           </p>
 
           <h4 className="font-heading font-semibold text-text mt-5 mb-2">
-            Step 1 — Good Faith Negotiation
+            Step 1: Good Faith Negotiation
           </h4>
           <p>
             The Customer and the Company will first attempt to resolve the
@@ -427,7 +427,7 @@ export default function TermsPage() {
           </p>
 
           <h4 className="font-heading font-semibold text-text mt-5 mb-2">
-            Step 2 — Mediation
+            Step 2: Mediation
           </h4>
           <p>
             If the dispute is not resolved through negotiation within thirty
@@ -437,7 +437,7 @@ export default function TermsPage() {
           </p>
 
           <h4 className="font-heading font-semibold text-text mt-5 mb-2">
-            Step 3 — Governing Law
+            Step 3: Governing Law
           </h4>
           <p>
             These Terms and Conditions are governed by and construed in
@@ -541,7 +541,7 @@ export default function TermsPage() {
               By authorizing any service, signing a work order, or enrolling
               in a Care Plan, the Customer acknowledges that they have read,
               understood, and agree to be bound by these Terms and Conditions
-              of Service. — GreenPump Care Inc.
+              of Service. GreenPump Care Inc.
             </p>
           </div>
         </Section>
@@ -587,7 +587,7 @@ function DefItem({
 }) {
   return (
     <li className="text-gray-700">
-      <strong className="text-text">{term}</strong> — {children}
+      <strong className="text-text">{term}:</strong> {children}
     </li>
   );
 }

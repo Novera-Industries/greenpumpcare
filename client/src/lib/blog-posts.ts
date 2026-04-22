@@ -70,7 +70,7 @@ export const BLOG_POSTS: BlogPost[] = [
         heading: "What the manufacturers say",
         paragraphs: [
           "Every major heat pump manufacturer, Mitsubishi, Daikin, Fujitsu, LG, Carrier, recommends annual professional cleaning as part of standard maintenance. Skip it, and you can void your warranty. That's usually buried in the fine print of the owner's manual, but it's there.",
-          "Annual cleaning also keeps your system operating near its rated efficiency. A dirty coil or blocked fan can quietly cut performance by 10–25%, which shows up on your power bill long before it shows up as a breakdown.",
+          "Annual cleaning also keeps your system operating near its rated efficiency. A dirty coil or blocked fan can quietly cut performance by 10 to 25%, which shows up on your power bill long before it shows up as a breakdown.",
         ],
       },
       {
@@ -97,7 +97,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         question: "How long does an annual deep clean take?",
         answer:
-          "About 1–1.5 hours per indoor head for ductless, 2–3 hours for ducted systems, and 0.5–1 hours for HRV/ERV units. We never rush. Thoroughness matters more than speed.",
+          "About 1 to 1.5 hours per indoor head for ductless, 2 to 3 hours for ducted systems, and 30 to 60 minutes for HRV/ERV units. We never rush. Thoroughness matters more than speed.",
       },
       {
         question: "Does rinsing the filter count as cleaning?",
@@ -106,7 +106,7 @@ export const BLOG_POSTS: BlogPost[] = [
       },
     ],
     pullquote: {
-      text: "A dirty coil can quietly cut system efficiency by 10–25%.",
+      text: "A dirty coil can quietly cut system efficiency by 10 to 25%.",
       attribution: "Manufacturer performance guidance",
     },
   },
@@ -167,7 +167,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         question: "Can I clean my HRV myself?",
         answer:
-          "You can rinse the filters yourself every 2–3 months. But the core, drain lines, and fan assembly need disassembly. That's the professional part.",
+          "You can rinse the filters yourself every 2 to 3 months. But the core, drain lines, and fan assembly need disassembly. That's the professional part.",
       },
       {
         question: "How much does an HRV cleaning cost?",
@@ -272,7 +272,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         heading: "What you can do yourself",
         paragraphs: [
-          "Pop the cover, pull the filters, rinse them in warm soapy water, let them air-dry, reinstall. That's roughly 10 minutes and should happen every 1–2 months.",
+          "Pop the cover, pull the filters, rinse them in warm soapy water, let them air-dry, reinstall. That's roughly 10 minutes and should happen every 1 to 2 months.",
           "You can also vacuum the outside grill, wipe visible dust from the louvers, and clear leaves and debris from around the outdoor condenser. All good maintenance. None of it touches the stuff that actually matters most.",
         ],
       },
@@ -305,7 +305,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         question: "How often should I rinse my filters between pro cleans?",
         answer:
-          "Every 4–8 weeks during the heating and cooling seasons. Quick rinse, full dry, put them back.",
+          "Every 4 to 8 weeks during the heating and cooling seasons. Quick rinse, full dry, put them back.",
       },
     ],
   },
@@ -462,7 +462,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         heading: "Ducted heat pump",
         paragraphs: [
-          "A full ducted system deep clean is $349 and takes 2–3 hours. That covers the air handler, evaporator coil, blower assembly, drain pan, condensate line, filter replacement, and a full performance test.",
+          "A full ducted system deep clean is $349 and takes 2 to 3 hours. That covers the air handler, evaporator coil, blower assembly, drain pan, condensate line, filter replacement, and a full performance test.",
           "Duct cleaning itself is a separate service and we don't include it in the deep clean. It's a different scope.",
         ],
       },
@@ -476,7 +476,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         heading: "Care Plans vs. one-off",
         paragraphs: [
-          "If you plan to clean annually anyway, a Care Plan beats paying per-visit. Plans start at $15/month for HRV-only, $22/month for a single ductless head, or $35/month for a ducted system. All plans include scheduled cleanings, priority booking, and 10–20% off any additional service calls.",
+          "If you plan to clean annually anyway, a Care Plan beats paying per-visit. Plans start at $15/month for HRV-only, $22/month for a single ductless head, or $35/month for a ducted system. All plans include scheduled cleanings, priority booking, and 10 to 20% off any additional service calls.",
           "Cancel any time. There's no contract.",
         ],
       },
@@ -529,7 +529,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         heading: "What the warranty actually covers",
         paragraphs: [
-          "Compressor warranties tend to be the longest. 10 years is common. Parts are usually 5–7 years. Labour is often 1–2 years unless you bought an extended plan.",
+          "Compressor warranties tend to be the longest. 10 years is common. Parts are usually 5 to 7 years. Labour is often 1 to 2 years unless you bought an extended plan.",
           "When a compressor fails at year 8 and the manufacturer asks for maintenance records, a homeowner with no paperwork is out of luck. We've seen it happen.",
         ],
       },
@@ -598,7 +598,7 @@ export const BLOG_POSTS: BlogPost[] = [
         paragraphs: [
           "Panel off. Filters out. Barrel fan removed (this is often where people are surprised. The fan comes completely out). Coil-specific cleaner applied, left to work for a few minutes, then rinsed with pressurised water until it runs clean.",
           "The barrel fan gets scrubbed separately. Drain pan and condensate line get flushed with an enzymatic cleaner. Antimicrobial treatment applied. Everything dries, then reassembly.",
-          "Total active work: 60–90 minutes per head for ductless. 2–3 hours for ducted systems.",
+          "Total active work: 60 to 90 minutes per head for ductless. 2 to 3 hours for ducted systems.",
         ],
       },
       {
@@ -651,13 +651,13 @@ export const BLOG_POSTS: BlogPost[] = [
         heading: "Why dirty = less efficient",
         paragraphs: [
           "A heat pump moves heat by forcing air across a coil. When the coil is dusty or coated in biofilm, two things happen: the surface area drops, and the insulating layer slows heat transfer. The system compensates by running longer, which means more compressor hours, which means more electricity.",
-          "Energy audits typically measure 10–25% efficiency loss in an uncleaned system. The exact number depends on how bad the buildup is.",
+          "Energy audits typically measure 10 to 25% efficiency loss in an uncleaned system. The exact number depends on how bad the buildup is.",
         ],
       },
       {
         heading: "What that costs in dollars",
         paragraphs: [
-          "A typical Halifax home with a heat pump uses about $1,800–$2,400/year in electricity for heating and cooling. A 15% efficiency loss translates to $270–$360 a year. That's every year it stays dirty.",
+          "A typical Halifax home with a heat pump uses about $1,800 to $2,400 a year in electricity for heating and cooling. A 15% efficiency loss translates to $270 to $360 a year. That's every year it stays dirty.",
           "A $199 annual cleaning pays for itself in energy savings alone, before you count the warranty protection or the longer compressor life.",
         ],
       },
@@ -678,7 +678,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         question: "Will a clean heat pump really pay for itself?",
         answer:
-          "In a typical Halifax home, yes. The electricity savings usually cover the cost of the annual clean in the first 6–8 months.",
+          "In a typical Halifax home, yes. The electricity savings usually cover the cost of the annual clean in the first 6 to 8 months.",
       },
       {
         question: "What else affects heat pump efficiency?",
@@ -739,7 +739,7 @@ export const BLOG_POSTS: BlogPost[] = [
       {
         question: "Which is more efficient?",
         answer:
-          "Ductless, typically by 15–25%. No duct losses, and you're only heating the rooms you use.",
+          "Ductless, typically by 15 to 25%. No duct losses, and you're only heating the rooms you use.",
       },
       {
         question: "Which breaks down more often?",

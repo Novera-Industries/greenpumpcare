@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Star, ArrowRight, ArrowLeft, Quote, ArrowUpRight } from "lucide-react";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
+import { MobileMarquee } from "@/components/ui/MobileMarquee";
 import { TESTIMONIALS, COMPANY } from "@/lib/constants";
 
 /* ------------------------------------------------------------------ */
@@ -202,7 +203,8 @@ export function Testimonials() {
           <h3 className="font-heading text-xl font-semibold text-text text-center mb-8">
             More from our customers
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {/* Desktop: animated grid */}
+          <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 gap-4">
             {TESTIMONIALS.map((review, i) => (
               <motion.a
                 key={review.name}
@@ -224,12 +226,8 @@ export function Testimonials() {
                 }}
                 className="group relative bg-white rounded-card p-5 border border-gray-100 hover:border-primary/30 h-full flex flex-col cursor-pointer overflow-hidden"
               >
-                {/* Top accent line. Scales in on hover */}
                 <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary to-mint scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-400" />
-
-                {/* Corner glow on hover */}
                 <div className="absolute -top-12 -right-12 w-32 h-32 bg-primary/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none" />
-
                 <div className="relative z-10 flex items-center justify-between mb-3">
                   <StarRating rating={review.rating} />
                   <ArrowUpRight className="w-3.5 h-3.5 text-gray-300 group-hover:text-primary opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300" />
@@ -255,6 +253,42 @@ export function Testimonials() {
               </motion.a>
             ))}
           </div>
+
+          {/* Mobile: forward marquee */}
+          <MobileMarquee speed={58} itemClassName="w-[280px] shrink-0 flex">
+            {TESTIMONIALS.map((review, i) => (
+              <a
+                key={review.name}
+                href={COMPANY.googleBusinessUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative bg-white rounded-card p-5 border border-gray-100 h-full w-full flex flex-col overflow-hidden"
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <StarRating rating={review.rating} />
+                  <ArrowUpRight className="w-3.5 h-3.5 text-gray-300" />
+                </div>
+                <p className="text-gray-700 text-sm leading-relaxed mb-4 line-clamp-4 flex-1">
+                  &ldquo;{review.text}&rdquo;
+                </p>
+                <div className="flex items-center gap-2.5 pt-3 border-t border-gray-100 mt-auto">
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-xs ${
+                      AVATAR_COLORS[i % AVATAR_COLORS.length]
+                    }`}
+                  >
+                    {getInitials(review.name)}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-text text-xs">
+                      {review.name}
+                    </p>
+                    <p className="text-gray-400 text-[10px]">{review.source}</p>
+                  </div>
+                </div>
+              </a>
+            ))}
+          </MobileMarquee>
         </div>
       </div>
     </AnimatedSection>

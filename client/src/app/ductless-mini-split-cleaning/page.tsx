@@ -26,7 +26,7 @@ export default function DuctlessMiniSplitPage() {
           before: "/images/services/ductless-before.jpg",
           beforeAlt: "Dirty ductless mini-split interior with dust and mould buildup",
           after: "/images/services/ductless-after-v2.jpg",
-          afterAlt: "Ductless mini-split interior after GreenPump Care deep clean — coils and louvers clear",
+          afterAlt: "Ductless mini-split interior after GreenPump Care deep clean, coils and louvers clear",
         }}
       />
       <ServiceSchema service={service} />

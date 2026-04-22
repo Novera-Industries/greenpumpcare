@@ -18,9 +18,9 @@ export function BookingCTA() {
   return (
     <AnimatedSection className="section bg-white">
       <div className="container">
-        <div className="relative max-w-6xl mx-auto bg-black rounded-[32px] overflow-hidden scale-75 origin-center">
+        <div className="relative max-w-6xl mx-auto bg-black rounded-[24px] sm:rounded-[32px] overflow-hidden md:scale-75 md:origin-center">
           {/* ============ MAIN CONTENT ============ */}
-          <div className="relative px-8 sm:px-14 lg:px-20 py-20 lg:py-28 text-center">
+          <div className="relative px-6 sm:px-14 lg:px-20 py-14 sm:py-20 lg:py-28 text-center">
             {/* Eyebrow */}
             <motion.div
               variants={fadeInUp}
@@ -40,7 +40,7 @@ export function BookingCTA() {
               whileInView="visible"
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="font-heading text-5xl sm:text-6xl lg:text-[88px] font-semibold text-white mb-6 leading-[0.98] tracking-[-0.04em]"
+              className="font-heading text-4xl sm:text-6xl lg:text-[88px] font-semibold text-white mb-5 sm:mb-6 leading-[0.98] tracking-[-0.04em]"
             >
               Ready when
               <br />
@@ -63,7 +63,7 @@ export function BookingCTA() {
               whileInView="visible"
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="text-white/60 text-xl sm:text-2xl mb-10 max-w-2xl mx-auto tracking-tight"
+              className="text-white/60 text-base sm:text-2xl mb-8 sm:mb-10 max-w-2xl mx-auto tracking-tight"
             >
               From <span className="text-white font-semibold">$129</span>. Free estimate.
               Book in <span className="text-white font-semibold">2 minutes</span>.
@@ -76,7 +76,7 @@ export function BookingCTA() {
               whileInView="visible"
               viewport={{ once: true }}
               transition={{ delay: 0.3 }}
-              className="flex flex-wrap justify-center items-center gap-4 mb-12"
+              className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 sm:gap-4 mb-8 sm:mb-12"
             >
               {/* Primary CTA with subtle pulsing glow */}
               <div className="relative">
@@ -103,7 +103,8 @@ export function BookingCTA() {
                 size="lg"
               >
                 <Phone className="w-5 h-5" />
-                {COMPANY.phone}
+                <span className="md:hidden">Call now</span>
+                <span className="hidden md:inline">{COMPANY.phone}</span>
               </Button>
             </motion.div>
 
@@ -114,15 +115,15 @@ export function BookingCTA() {
               whileInView="visible"
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
-              className="flex flex-wrap justify-center gap-x-8 gap-y-3"
+              className="flex flex-wrap justify-center gap-x-5 sm:gap-x-8 gap-y-3"
             >
               {perks.map((perk) => (
                 <li
                   key={perk.label}
-                  className="flex items-center gap-2.5 text-white/70 text-lg"
+                  className="flex items-center gap-2.5 text-white/70 text-sm sm:text-lg"
                 >
-                  <div className="w-9 h-9 rounded-full bg-primary/15 flex items-center justify-center">
-                    <perk.icon className="w-5 h-5 text-primary" strokeWidth={2.5} />
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary/15 flex items-center justify-center">
+                    <perk.icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary" strokeWidth={2.5} />
                   </div>
                   {perk.label}
                 </li>

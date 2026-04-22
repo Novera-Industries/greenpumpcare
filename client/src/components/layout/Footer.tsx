@@ -55,8 +55,8 @@ const trustBadges = [
 ];
 
 const hoursSchedule = [
-  { day: "Monday – Friday", hours: "8:00 AM – 8:00 PM", closed: false },
-  { day: "Saturday", hours: "10:00 AM – 5:00 PM", closed: false },
+  { day: "Monday to Friday", hours: "8:00 AM to 8:00 PM", closed: false },
+  { day: "Saturday", hours: "10:00 AM to 5:00 PM", closed: false },
   { day: "Sunday", hours: "Closed", closed: true },
 ];
 
